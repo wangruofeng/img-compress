@@ -560,7 +560,7 @@ ecocompress/
 
 **如果這個專案對您有幫助，請給個 ⭐ Star！**
 
-Made with ❤️ by EcoCompress Contributors
+Made with ❤️ by EcoCompress Contributors<br>
 wangruofeng
 
 </div>
