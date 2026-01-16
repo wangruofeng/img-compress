@@ -148,7 +148,7 @@ function AppContent() {
       <Header />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-        <section className="max-w-3xl mx-auto space-y-8">
+        <section className="max-w-4xl mx-auto space-y-8">
             <div className="text-center space-y-3">
                 <h2 className="text-3xl font-bold text-gray-900">{t('heroTitle')}</h2>
                 <p className="text-gray-500 whitespace-pre-line">{t('heroSubtitle')}</p>
