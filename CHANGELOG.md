@@ -13,6 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 简体中文
 
+### [1.1.0] - 2026-01-26
+
+#### 🐛 Bug 修复
+- 提高了图片质量默认值从 80% 到 90%，以获得更好的压缩效果
+
+---
+
 ### [0.1.0] - 2026-01-13
 
 #### ✨ 新增功能
@@ -38,6 +45,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## English
 
+### [1.1.0] - Jan 26, 2026
+
+#### 🐛 Bug Fixes
+- Increased default image quality from 80% to 90% for better compression results
+
+---
+
 ### [0.1.0] - Jan 13, 2026
 
 #### ✨ New Features
@@ -62,6 +76,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ---
 
 ## 繁體中文
+
+### [1.1.0] - 2026-01-26
+
+#### 🐛 Bug 修復
+- 提高了圖片品質預設值從 80% 到 90%，以獲得更好的壓縮效果
+
+---
 
 ### [0.1.0] - 2026-01-13
 

@@ -15,7 +15,7 @@ function AppContent() {
   const [images, setImages] = useState<ProcessedImage[]>([]);
   const [previewImage, setPreviewImage] = useState<ProcessedImage | null>(null);
   const [settings, setSettings] = useState<CompressionSettings>({
-    quality: 0.8,
+    quality: 0.9,
     format: 'image/jpeg',
     maxWidth: 1920
   });
