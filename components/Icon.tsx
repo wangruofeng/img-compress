@@ -1,16 +1,19 @@
 import React from 'react';
-import { 
-  UploadCloud, 
-  Download, 
-  Trash2, 
-  Settings2, 
+import {
+  UploadCloud,
+  Download,
+  Trash2,
+  Settings2,
   Image as ImageIcon,
   CheckCircle,
   XCircle,
   Loader2,
   ArrowRight,
   Globe,
-  X
+  X,
+  Minimize2,
+  Sun,
+  Moon
 } from 'lucide-react';
 
 // Exporting individual icons for cleaner usage
@@ -23,5 +26,9 @@ export const CheckIcon = CheckCircle;
 export const ErrorIcon = XCircle;
 export const LoadingIcon = Loader2;
 export const ArrowIcon = ArrowRight;
+export const ArrowRightIcon = ArrowRight;
 export const GlobeIcon = Globe;
 export const CloseIcon = X;
+export const CompressIcon = Minimize2;
+export const SunIcon = Sun;
+export const MoonIcon = Moon;

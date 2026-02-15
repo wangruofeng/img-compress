@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import JSZip from 'jszip';
 import { ProcessedImage, CompressionSettings } from './types';
-import { generateId } from './utils/helpers';
+import { generateId, formatFileSize } from './utils/helpers';
 import { compressImage } from './utils/compressor';
 import Header from './components/Header';
 import Dropzone from './components/Dropzone';
 import SettingsPanel from './components/SettingsPanel';
 import ImageCard from './components/ImageCard';
 import PreviewModal from './components/PreviewModal';
-import { DownloadIcon, LoadingIcon, DeleteIcon } from './components/Icon';
+import { DownloadIcon, LoadingIcon, DeleteIcon, ArrowRightIcon, CompressIcon } from './components/Icon';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 
 const STORAGE_KEY = 'img_compress_settings';
@@ -44,6 +44,7 @@ function AppContent() {
   const [previewImage, setPreviewImage] = useState<ProcessedImage | null>(null);
   const [settings, setSettings] = useState<CompressionSettings>(loadSettings);
   const [isProcessingGlobal, setIsProcessingGlobal] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const handleSettingsChange = (newSettings: CompressionSettings) => {
     setSettings(newSettings);
@@ -149,13 +150,46 @@ function AppContent() {
     });
   };
 
-  const handleClearAll = () => {
+  // 确认删除时真正清空
+  const confirmClearAll = () => {
       images.forEach(img => {
           URL.revokeObjectURL(img.originalPreviewUrl);
           if (img.compressedUrl) URL.revokeObjectURL(img.compressedUrl);
       });
       setImages([]);
+      setShowDeleteConfirm(false);
+      setIsProcessingGlobal(false);
   };
+
+  // 点击删除按钮 - 第一次点击显示确认，第二次确认删除
+  const handleClearAll = () => {
+      if (showDeleteConfirm) {
+          confirmClearAll();
+      } else {
+          setShowDeleteConfirm(true);
+      }
+  };
+
+  // 取消删除确认
+  const cancelDelete = () => {
+      setShowDeleteConfirm(false);
+  };
+
+  // 键盘事件 - 支持回车确认删除，ESC 取消
+  useEffect(() => {
+      const handleKeyDown = (e: KeyboardEvent) => {
+          if (!showDeleteConfirm) return;
+
+          if (e.key === 'Enter') {
+              confirmClearAll();
+          } else if (e.key === 'Escape') {
+              cancelDelete();
+          }
+      };
+
+      window.addEventListener('keydown', handleKeyDown);
+      return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showDeleteConfirm, images]);
 
   const handleDownloadAll = async () => {
       const completedImages = images.filter(img => img.status === 'done' && img.compressedBlob);
@@ -195,87 +229,149 @@ function AppContent() {
   };
 
   return (
-    <div className="min-h-screen pb-20">
+    <div className="min-h-screen pb-20 noise-bg">
       <Header />
-      
+
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         <section className="max-w-4xl mx-auto space-y-8">
-            <div className="text-center space-y-3">
-                <h2 className="text-3xl font-bold text-gray-900">{t('heroTitle')}</h2>
-                <p className="text-gray-500 whitespace-pre-line">{t('heroSubtitle')}</p>
+            <div className="text-center space-y-4 animate-fade-in px-4">
+                <h2 className="text-4xl md:text-5xl font-display font-bold gradient-text">{t('heroTitle')}</h2>
+                <p className="text-zinc-500 dark:text-zinc-400 text-lg leading-relaxed">{t('heroSubtitle')}</p>
             </div>
-            
+
             <Dropzone onFilesSelected={handleFilesSelected} />
         </section>
 
         {images.length > 0 && (
-          <div className="animate-fade-in space-y-8">
+          <div className="animate-slide-up space-y-6">
+            {/* Settings and Stats combined */}
             <div className="max-w-4xl mx-auto">
                 <SettingsPanel
                     settings={settings}
                     onSettingsChange={handleSettingsChange}
                     disabled={isProcessingGlobal}
+                    stats={(() => {
+                        const completedImages = images.filter(img => img.status === 'done' && img.compressedBlob);
+                        if (completedImages.length === 0) return null;
+
+                        const totalOriginal = completedImages.reduce((sum, img) => sum + img.originalFile.size, 0);
+                        const totalCompressed = completedImages.reduce((sum, img) => sum + (img.compressedBlob?.size || 0), 0);
+                        const savedBytes = totalOriginal - totalCompressed;
+                        const savedPercent = totalOriginal > 0 ? Math.round((savedBytes / totalOriginal) * 100) : 0;
+
+                        return { totalOriginal, totalCompressed, savedBytes, savedPercent };
+                    })()}
                 />
             </div>
 
-            <div className="flex justify-between items-center border-b border-gray-200 pb-4">
-                <h3 className="text-lg font-semibold text-gray-800">
-                    {t('queueTitle')} ({images.length})
-                </h3>
-                <div className="flex gap-3">
-                    <button 
-                        onClick={handleClearAll}
-                        className="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                    >
-                        <DeleteIcon className="w-4 h-4" />
-                        {t('clearAll')}
-                    </button>
-                    <button 
-                        onClick={handleDownloadAll}
-                        disabled={isProcessingGlobal}
-                        className="flex items-center gap-2 px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-medium transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                        {isProcessingGlobal ? (
-                            <LoadingIcon className="w-4 h-4 animate-spin" />
-                        ) : (
-                            <DownloadIcon className="w-4 h-4" />
-                        )}
-                        {t('downloadAll')}
-                    </button>
+            <div className="max-w-4xl mx-auto">
+                <div className="flex items-center justify-between pb-4 border-b border-zinc-300 dark:border-zinc-800">
+                    <h3 className="text-lg font-semibold text-zinc-800 dark:text-zinc-200 flex items-center gap-3">
+                        <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                        {t('queueTitle')} <span className="text-zinc-500">({images.length})</span>
+                    </h3>
                 </div>
-            </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {images.map(image => (
-                    <ImageCard 
-                        key={image.id} 
-                        image={image} 
-                        onRemove={handleRemoveImage}
-                        onPreview={setPreviewImage}
-                    />
-                ))}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pt-4">
+                    {images.map((image, index) => (
+                        <div key={image.id} className="animate-scale-in" style={{ animationDelay: `${index * 50}ms` }}>
+                            <ImageCard
+                                image={image}
+                                onRemove={handleRemoveImage}
+                                onPreview={setPreviewImage}
+                            />
+                        </div>
+                    ))}
+                </div>
             </div>
           </div>
         )}
       </main>
 
       {previewImage && (
-        <PreviewModal 
+        <PreviewModal
           originalUrl={previewImage.originalPreviewUrl}
           compressedUrl={previewImage.compressedUrl}
           title={previewImage.originalFile.name}
           onClose={() => setPreviewImage(null)}
         />
       )}
+
+      {/* Floating Action Buttons */}
+      {images.length > 0 && !showDeleteConfirm && (
+        <div className="fixed right-6 bottom-6 z-40 flex flex-col gap-3">
+          <button
+            onClick={handleClearAll}
+            className="flex items-center justify-center gap-2 px-5 py-3 text-sm text-zinc-500 dark:text-zinc-300 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all duration-300 border border-zinc-300 dark:border-zinc-700 hover:border-red-500/50 glass-elevated shadow-lg"
+            title={t('clearAll')}
+          >
+            <DeleteIcon className="w-5 h-5" />
+          </button>
+          <button
+            onClick={handleDownloadAll}
+            disabled={isProcessingGlobal}
+            className="flex items-center justify-center gap-2 px-5 py-3 bg-gradient-to-r from-primary to-primary-dark hover:from-primary-light hover:to-primary text-white rounded-xl text-sm font-medium transition-all duration-300 shadow-lg shadow-primary/25 hover:shadow-primary/40 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 active:scale-95"
+            title={t('downloadAll')}
+          >
+            {isProcessingGlobal ? (
+              <LoadingIcon className="w-5 h-5 animate-spin" />
+            ) : (
+              <DownloadIcon className="w-5 h-5" />
+            )}
+          </button>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm animate-in fade-in duration-200"
+          onClick={cancelDelete}
+        >
+          <div
+            className="glass-elevated rounded-2xl p-8 max-w-sm w-full mx-4 border border-red-500/30 shadow-2xl shadow-red-500/20 animate-in scale-in-95 duration-300"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="text-center space-y-5">
+              <div className="w-16 h-16 mx-auto bg-red-500/20 rounded-full flex items-center justify-center">
+                <DeleteIcon className="w-8 h-8 text-red-400" />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-display font-bold text-zinc-900 dark:text-white">确认清空全部？</h3>
+                <p className="text-zinc-400 text-sm">此操作将删除所有图片且无法撤销</p>
+              </div>
+              <div className="flex gap-3 pt-2">
+                <button
+                  onClick={cancelDelete}
+                  className="flex-1 px-5 py-3 text-sm text-zinc-300 hover:text-white bg-zinc-800 hover:bg-zinc-700 rounded-xl transition-all duration-300 border border-zinc-700"
+                >
+                  取消
+                </button>
+                <button
+                  onClick={confirmClearAll}
+                  className="flex-1 px-5 py-3 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-xl transition-all duration-300 shadow-lg shadow-red-500/25"
+                >
+                  确认删除
+                </button>
+              </div>
+              <p className="text-xs text-zinc-500">按 Enter 确认 / ESC 取消</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
+import { ThemeProvider } from './contexts/ThemeContext';
+
 function App() {
     return (
-        <LanguageProvider>
-            <AppContent />
-        </LanguageProvider>
+        <ThemeProvider>
+            <LanguageProvider>
+                <AppContent />
+            </LanguageProvider>
+        </ThemeProvider>
     );
 }
 

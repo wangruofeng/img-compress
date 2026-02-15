@@ -109,30 +109,30 @@ const PreviewModal: React.FC<PreviewModalProps> = ({ originalUrl, compressedUrl,
   // 如果没有压缩图，只显示原图
   if (!compressedUrl) {
     return (
-      <div 
-        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 animate-in fade-in duration-200"
+      <div
+        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md p-4 animate-in fade-in duration-200"
         onClick={onClose}
       >
-        <div className="absolute top-4 right-4 flex items-center gap-4">
-          <h3 className="text-white text-sm font-medium hidden sm:block bg-black/50 px-3 py-1 rounded-full border border-white/10">
+        <div className="absolute top-4 right-4 flex items-center gap-4 z-10">
+          <h3 className="text-white text-sm font-medium hidden sm:block bg-zinc-800/80 px-4 py-2 rounded-full border border-zinc-700">
             {title}
           </h3>
-          <button 
+          <button
             onClick={onClose}
-            className="p-2 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors border border-white/20"
+            className="p-2.5 bg-zinc-800 hover:bg-zinc-700 text-white rounded-full transition-all duration-300 border border-zinc-700 hover:border-primary"
           >
-            <CloseIcon className="w-6 h-6" />
+            <CloseIcon className="w-5 h-5" />
           </button>
         </div>
 
-        <div 
+        <div
           className="max-w-full max-h-full flex items-center justify-center"
           onClick={(e) => e.stopPropagation()}
         >
-          <img 
-            src={originalUrl} 
-            alt={title} 
-            className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl animate-in zoom-in-95 duration-300"
+          <img
+            src={originalUrl}
+            alt={title}
+            className="max-w-full max-h-[90vh] object-contain rounded-2xl shadow-2xl animate-in zoom-in-95 duration-300 border border-zinc-800"
           />
         </div>
       </div>
@@ -140,44 +140,44 @@ const PreviewModal: React.FC<PreviewModalProps> = ({ originalUrl, compressedUrl,
   }
 
   return (
-    <div 
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 animate-in fade-in duration-200"
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md p-4 animate-in fade-in duration-200"
       onClick={onClose}
     >
       <div className="absolute top-4 right-4 flex items-center gap-4 z-10">
-        <h3 className="text-white text-sm font-medium hidden sm:block bg-black/50 px-3 py-1 rounded-full border border-white/10">
+        <h3 className="text-white text-sm font-medium hidden sm:block bg-zinc-800/80 px-4 py-2 rounded-full border border-zinc-700">
           {title}
         </h3>
-        <button 
+        <button
           onClick={onClose}
-          className="p-2 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors border border-white/20"
+          className="p-2.5 bg-zinc-800 hover:bg-zinc-700 text-white rounded-full transition-all duration-300 border border-zinc-700 hover:border-primary"
         >
-          <CloseIcon className="w-6 h-6" />
+          <CloseIcon className="w-5 h-5" />
         </button>
       </div>
 
-      <div 
+      <div
         ref={containerRef}
-        className="relative max-w-full max-h-[90vh] flex items-center justify-center rounded-lg shadow-2xl animate-in zoom-in-95 duration-300"
+        className="relative max-w-full max-h-[90vh] flex items-center justify-center rounded-2xl shadow-2xl animate-in zoom-in-95 duration-300 border border-zinc-800"
         onClick={(e) => e.stopPropagation()}
         style={{ cursor: isDragging ? 'col-resize' : 'default' }}
       >
         {/* 图片容器 - 确保两张图片尺寸一致 */}
         <div className="relative flex items-center justify-center">
           {/* 原图（完整显示，作为背景） */}
-          <img 
-            src={originalUrl} 
+          <img
+            src={originalUrl}
             alt={`${title} - 原图`}
             className="max-w-full max-h-[90vh] w-auto h-auto object-contain block"
             ref={imageRef}
           />
 
           {/* 压缩图（左侧裁剪显示，覆盖在原图上） */}
-          <img 
-            src={compressedUrl} 
+          <img
+            src={compressedUrl}
             alt={`${title} - 压缩后`}
             className="absolute top-0 left-0 max-w-full max-h-[90vh] w-auto h-auto object-contain block"
-            style={{ 
+            style={{
               clipPath: `inset(0 ${100 - splitPosition}% 0 0)`,
               pointerEvents: 'none',
               width: imageSize?.width || imageRef.current?.width || 'auto',
@@ -189,7 +189,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({ originalUrl, compressedUrl,
         {/* 分割线 */}
         <div
           className="absolute top-0 bottom-0 w-0.5 bg-white shadow-lg z-20 transition-opacity"
-          style={{ 
+          style={{
             left: `${splitPosition}%`,
             opacity: isDragging ? 1 : 0.8,
             cursor: 'col-resize',
@@ -200,22 +200,22 @@ const PreviewModal: React.FC<PreviewModalProps> = ({ originalUrl, compressedUrl,
           onTouchStart={handleTouchStart}
         >
           {/* 拖拽手柄 */}
-          <div 
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg border-2 border-gray-300 hover:bg-gray-50 transition-colors"
+          <div
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center shadow-lg border-2 border-white hover:scale-110 transition-transform"
             style={{ cursor: 'col-resize' }}
           >
             <div className="flex gap-1">
-              <div className="w-1 h-4 bg-gray-400 rounded-full"></div>
-              <div className="w-1 h-4 bg-gray-400 rounded-full"></div>
+              <div className="w-1 h-5 bg-white rounded-full"></div>
+              <div className="w-1 h-5 bg-white rounded-full"></div>
             </div>
           </div>
         </div>
 
         {/* 标签提示 */}
-        <div className="absolute top-4 left-4 bg-black/50 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-medium border border-white/10 z-30">
+        <div className="absolute top-4 left-4 bg-zinc-800/90 backdrop-blur-sm text-white px-4 py-2 rounded-full text-xs font-medium border border-zinc-700 z-30 shadow-lg">
           压缩后
         </div>
-        <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-medium border border-white/10 z-30">
+        <div className="absolute top-4 right-4 bg-zinc-800/90 backdrop-blur-sm text-white px-4 py-2 rounded-full text-xs font-medium border border-zinc-700 z-30 shadow-lg">
           原图
         </div>
       </div>

@@ -31,6 +31,7 @@
 - 📱 **响应式设计** - 完美适配桌面端和移动端设备
 - ⚡ **高性能** - 基于 Canvas API，压缩速度快，资源占用低
 - 🌐 **在线访问** - 已部署到 GitHub Pages，可直接在线使用
+- 🌙 **深色/浅色模式** - 支持深色和浅色主题切换，主题偏好自动保存
 
 ### 🎬 功能演示
 
@@ -213,6 +214,7 @@ img_compress/
 - 📱 **Responsive Design** - Perfect for desktop and mobile devices
 - ⚡ **High Performance** - Based on Canvas API, fast compression with low resource usage
 - 🌐 **Online Access** - Deployed to GitHub Pages, accessible online
+- 🌙 **Dark/Light Mode** - Support for dark and light theme switching, theme preference saved automatically
 
 ### 🎬 Demo
 
@@ -395,6 +397,7 @@ For detailed changelog, please see [CHANGELOG.md](CHANGELOG.md).
 - 📱 **響應式設計** - 完美適配桌面端和行動裝置
 - ⚡ **高效能** - 基於 Canvas API，壓縮速度快，資源佔用低
 - 🌐 **線上訪問** - 已部署到 GitHub Pages，可直接線上使用
+- 🌙 **深色/淺色模式** - 支援深色和淺色主題切換，主題偏好自動儲存
 
 ### 🎬 功能演示
 
