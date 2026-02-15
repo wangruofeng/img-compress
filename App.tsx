@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import JSZip from 'jszip';
 import { ProcessedImage, CompressionSettings } from './types';
 import { generateId } from './utils/helpers';
 import { compressImage } from './utils/compressor';
@@ -156,19 +157,41 @@ function AppContent() {
       setImages([]);
   };
 
-  const handleDownloadAll = () => {
-      images.forEach(img => {
-          if (img.status === 'done' && img.compressedUrl) {
-              const link = document.createElement('a');
-              link.href = img.compressedUrl;
-              const extension = img.compressedBlob?.type.split('/')[1] || 'jpg';
-              const originalName = img.originalFile.name.substring(0, img.originalFile.name.lastIndexOf('.'));
-              link.download = `${originalName}_compressed.${extension}`;
-              document.body.appendChild(link);
-              link.click();
-              document.body.removeChild(link);
-          }
+  const handleDownloadAll = async () => {
+      const completedImages = images.filter(img => img.status === 'done' && img.compressedBlob);
+
+      if (completedImages.length === 0) return;
+
+      if (completedImages.length === 1) {
+          const img = completedImages[0];
+          const link = document.createElement('a');
+          link.href = img.compressedUrl!;
+          const extension = img.compressedBlob?.type.split('/')[1] || 'jpg';
+          const originalName = img.originalFile.name.substring(0, img.originalFile.name.lastIndexOf('.'));
+          link.download = `${originalName}_compressed.${extension}`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          return;
+      }
+
+      const zip = new JSZip();
+      completedImages.forEach(img => {
+          const extension = img.compressedBlob?.type.split('/')[1] || 'jpg';
+          const originalName = img.originalFile.name.substring(0, img.originalFile.name.lastIndexOf('.'));
+          const fileName = `${originalName}_compressed.${extension}`;
+          zip.file(fileName, img.compressedBlob!);
       });
+
+      const zipBlob = await zip.generateAsync({ type: 'blob' });
+      const url = URL.createObjectURL(zipBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'compressed_images.zip';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
   };
 
   return (
