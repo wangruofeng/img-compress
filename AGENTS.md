@@ -13,7 +13,7 @@ ImgCompress is a client-side image compression tool built with React 19, TypeScr
 npm install
 
 # Start development server (port 3000)
-npm run dev
+npm run start
 
 # Build for production
 npm run build

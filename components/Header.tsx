@@ -31,15 +31,10 @@ const Header: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center gap-3">
-            <div className="relative">
-              <div className="bg-gradient-to-br from-primary to-accent p-2.5 rounded-xl shadow-lg shadow-primary/20">
-                <ImageIconRef className="w-6 h-6 text-white" />
-              </div>
-              <div className="absolute -inset-0.5 bg-gradient-to-br from-primary to-accent rounded-xl blur opacity-30"></div>
-            </div>
+            <img src="/logo.svg" alt="ImgCompress" className="w-10 h-10 rounded-xl" />
             <div>
-              <h1 className="text-xl font-display font-bold text-zinc-900 dark:text-white">{t('appTitle')}</h1>
-              <p className="text-xs text-primary-dark dark:text-primary-light font-medium hidden sm:block">{t('appSubtitle')}</p>
+              <h1 className="text-xl font-display font-bold gradient-text">{t('appTitle')}</h1>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium hidden sm:block">{t('appSubtitle')}</p>
             </div>
           </div>
 
@@ -80,16 +75,16 @@ const Header: React.FC = () => {
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center justify-center gap-2 h-9 px-3 rounded-lg text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors border border-zinc-300 dark:border-zinc-700"
+                className="flex items-center justify-center gap-2 h-9 px-3 rounded-lg text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
               >
-                <GlobeIcon className="w-4 h-4 text-primary-dark dark:text-primary-light" />
+                <GlobeIcon className="w-4 h-4" />
                 <span className="hidden sm:inline">
                   {languages.find(l => l.code === language)?.label}
                 </span>
               </button>
 
               {isDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-40 glass-elevated rounded-xl shadow-2xl py-1 overflow-hidden animate-scale-in border border-zinc-200 dark:border-zinc-700/50">
+                <div className="absolute right-0 mt-2 w-36 rounded-lg py-1 overflow-hidden animate-scale-in bg-white dark:bg-zinc-900 shadow-lg border border-zinc-100 dark:border-zinc-800">
                   {languages.map((lang) => (
                     <button
                       key={lang.code}
@@ -97,13 +92,13 @@ const Header: React.FC = () => {
                         setLanguage(lang.code);
                         setIsDropdownOpen(false);
                       }}
-                      className={`w-full text-left px-4 py-2.5 text-sm transition-all duration-200 flex items-center gap-3 ${
+                      className={`w-full text-left px-3 py-2 text-sm transition-colors duration-150 flex items-center gap-2 ${
                         language === lang.code
-                          ? 'bg-primary/20 text-primary-dark dark:text-primary-light font-medium'
-                          : 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                          ? 'text-zinc-900 dark:text-white font-medium'
+                          : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800/50'
                       }`}
                     >
-                      <span className="text-base">{lang.flag}</span>
+                      <span className="text-sm">{lang.flag}</span>
                       <span>{lang.label}</span>
                     </button>
                   ))}

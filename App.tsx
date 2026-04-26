@@ -329,7 +329,7 @@ function AppContent() {
 
       {/* Floating Action Buttons */}
       {images.length > 0 && !showDeleteConfirm && (
-        <div className="fixed right-6 bottom-6 z-40 flex flex-col gap-3">
+        <div className="fixed right-10 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-3">
           <button
             onClick={handleClearAll}
             className="flex items-center justify-center gap-2 px-5 py-3 text-sm text-zinc-500 dark:text-zinc-300 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all duration-300 border border-zinc-300 dark:border-zinc-700 hover:border-red-500/50 glass-elevated shadow-lg"
