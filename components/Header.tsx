@@ -31,7 +31,7 @@ const Header: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center gap-3">
-            <img src="public/logo.svg" alt="ImgCompress" className="w-10 h-10 rounded-xl" />
+            <img src={`${import.meta.env.BASE_URL}logo.svg`} alt="ImgCompress" className="w-10 h-10 rounded-xl" />
             <div>
               <h1 className="text-xl font-display font-bold gradient-text">{t('appTitle')}</h1>
               <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium hidden sm:block">{t('appSubtitle')}</p>
