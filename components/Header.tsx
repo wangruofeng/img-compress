@@ -92,11 +92,10 @@ const Header: React.FC = () => {
                         setLanguage(lang.code);
                         setIsDropdownOpen(false);
                       }}
-                      className={`w-full text-left px-3 py-2 text-sm transition-colors duration-150 flex items-center gap-2 ${
-                        language === lang.code
-                          ? 'text-zinc-900 dark:text-white font-medium'
-                          : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800/50'
-                      }`}
+                      className={`w-full text-left px-3 py-2 text-sm transition-colors duration-150 flex items-center gap-2 ${language === lang.code
+                        ? 'text-zinc-900 dark:text-white font-medium'
+                        : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800/50'
+                        }`}
                     >
                       <span className="text-sm">{lang.flag}</span>
                       <span>{lang.label}</span>

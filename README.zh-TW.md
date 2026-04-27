@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="public/logo.svg" alt="ImgCompress Logo" width="120" height="120" />
+<img src="/logo.svg" alt="ImgCompress Logo" width="120" height="120" />
 
 # ImgCompress
 
