@@ -52,9 +52,9 @@ const Header: React.FC = () => {
                 href="https://github.com/wangruofeng/img-compress/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-primary-dark hover:text-primary-light transition-colors"
+                className="flex items-center justify-center w-9 h-9 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-primary-dark dark:hover:text-primary-light hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
               >
-                {t('github')}
+                <img src={`${import.meta.env.BASE_URL}github.svg`} alt="GitHub" className="w-5 h-5 dark:invert" />
               </a>
             </div>
 
