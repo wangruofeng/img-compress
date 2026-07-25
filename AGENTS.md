@@ -27,9 +27,15 @@ npm run preview:gh-pages
 
 **No linting or testing commands exist.** Run `npm run build` to verify changes compile correctly.
 
-## GitHub Pages Deployment
+## Deployment
 
-The project is configured for automatic deployment to GitHub Pages:
+The primary deployment target is Cloudflare Pages:
+
+- **Cloudflare Pages**: `https://img-compress.wangruofeng007.com/`
+- **Cloudflare build**: `npm run build:cloudflare` (root `/` base)
+- **Direct deploy**: `npx wrangler@latest pages deploy ./dist --project-name=img-compress --branch=main`
+
+GitHub Pages remains available as a compatibility deployment:
 
 - **Base Path**: `/img-compress/` (configured in `vite.config.ts`)
 - **Workflow**: `.github/workflows/deploy.yml`

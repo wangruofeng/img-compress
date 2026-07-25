@@ -6,6 +6,7 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
+    "build:cloudflare": "vite build --mode cloudflare",
     "preview": "vite preview",
     "preview:gh-pages": "vite preview --base /img-compress/"
   },

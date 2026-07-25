@@ -11,7 +11,7 @@
 [![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat&logo=vite&logoColor=white)](https://vitejs.dev/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-**🌐 [Live Demo](https://wangruofeng.github.io/img-compress/) | [GitHub Repository](https://github.com/wangruofeng/img-compress)**
+**🌐 [Live Demo](https://img-compress.wangruofeng007.com/) | [GitHub Repository](https://github.com/wangruofeng/img-compress)**
 
 **Language / 语言 / 語言**: **English** | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md)
 

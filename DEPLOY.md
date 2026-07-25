@@ -1,6 +1,25 @@
-# GitHub Pages 部署指南
+# 部署指南
 
-本项目已配置为自动部署到 GitHub Pages。
+本项目使用 Cloudflare Pages 部署到自定义域名，同时保留 GitHub Pages 的兼容构建。
+
+## Cloudflare Pages
+
+Cloudflare Pages 项目名为 `img-compress`，生产地址为：
+
+`https://img-compress.wangruofeng007.com/`
+
+本地直接部署前先构建根路径版本：
+
+```bash
+npm run build:cloudflare
+npx wrangler@latest pages deploy ./dist --project-name=img-compress --branch=main
+```
+
+Cloudflare 构建使用 `/` 作为 base，适配自定义域名根路径。
+
+## GitHub Pages 部署
+
+GitHub Pages 仍使用 `/img-compress/` 子路径构建；推送 `main` 分支会触发现有 GitHub Actions 工作流。
 
 ## 自动部署
 
@@ -29,7 +48,7 @@
 在部署前，可以在本地测试 GitHub Pages 版本的构建：
 
 ```bash
-# 构建生产版本（会自动使用 /img-compress/ base 路径）
+# 构建 GitHub Pages 版本（使用 /img-compress/ base 路径）
 npm run build
 
 # 预览 GitHub Pages 版本

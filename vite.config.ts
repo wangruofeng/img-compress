@@ -4,8 +4,8 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode, command }) => {
     const env = loadEnv(mode, '.', '');
-    // 构建时使用 /img-compress/ 作为 base，开发时使用 /
-    const base = command === 'build' ? '/img-compress/' : '/';
+    // GitHub Pages 使用仓库子路径，Cloudflare Pages 使用自定义域名根路径。
+    const base = mode === 'cloudflare' ? '/' : command === 'build' ? '/img-compress/' : '/';
     return {
       base,
       server: {
