@@ -12,6 +12,9 @@ interface OnboardingProps {
   onClose: () => void;
 }
 
+const headerButtonClass =
+  'flex items-center justify-center w-11 h-11 text-zinc-500 dark:text-zinc-400 hover:text-primary-dark dark:hover:text-primary-light transition-colors';
+
 // Scroll-triggered reveal wrapper: fades + rises once when entering the viewport
 const Reveal: React.FC<{
   children: React.ReactNode;
@@ -68,10 +71,18 @@ const Onboarding: React.FC<OnboardingProps> = ({ onClose }) => {
       if (e.key === 'Escape') onClose();
     };
     window.addEventListener('keydown', handleEsc);
+    // Compensate for the removed scrollbar so the page behind doesn't shift sideways
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    const prevOverflow = document.body.style.overflow;
+    const prevPaddingRight = document.body.style.paddingRight;
     document.body.style.overflow = 'hidden';
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    }
     return () => {
       window.removeEventListener('keydown', handleEsc);
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = prevOverflow;
+      document.body.style.paddingRight = prevPaddingRight;
     };
   }, [onClose]);
 
@@ -101,21 +112,21 @@ const Onboarding: React.FC<OnboardingProps> = ({ onClose }) => {
       role="dialog"
       aria-modal="true"
       aria-label={t('onboardHelpLabel')}
-      className="fixed inset-0 z-[200] overflow-y-auto bg-gradient-to-br from-[#f8fafc] via-[#f1f5f9] to-[#e2e8f0] dark:from-[#09090b] dark:via-[#18181b] dark:to-[#0c0c10] noise-bg animate-fade-in"
+      className="fixed inset-0 z-[200] overflow-y-auto bg-gradient-to-br from-[#f8fafc] via-[#f1f5f9] to-[#e2e8f0] dark:from-[#09090b] dark:via-[#18181b] dark:to-[#0c0c10] noise-bg"
     >
       {/* Controls — mirrors the main header's button group so the language button aligns across pages */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-end gap-2 sm:gap-4 pt-4">
+        <div className="flex items-center justify-end gap-2 sm:gap-2.5 pt-4">
           <button
             onClick={onClose}
             aria-label={t('closePreview')}
-            className="flex items-center justify-center w-9 h-9 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-primary-dark dark:hover:text-primary-light hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+            className={headerButtonClass}
           >
             <CloseIcon className="w-5 h-5" />
           </button>
           <button
             onClick={toggleTheme}
-            className="flex items-center justify-center w-9 h-9 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-primary-dark dark:hover:text-primary-light hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+            className={headerButtonClass}
             title={theme === 'dark' ? t('themeToLight') : t('themeToDark')}
             aria-label={theme === 'dark' ? t('themeToLight') : t('themeToDark')}
           >
@@ -131,13 +142,13 @@ const Onboarding: React.FC<OnboardingProps> = ({ onClose }) => {
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-16 sm:pb-20 space-y-16 sm:space-y-24">
         {/* Hero — leaves a peek of the next section at the bottom to signal scrollability */}
-        <section className="relative min-h-[calc(100dvh-11.5rem)] flex flex-col items-center justify-center text-center space-y-6 py-16">
+        <section className="relative min-h-[calc(100dvh-11.5rem)] flex flex-col items-center justify-center text-center space-y-6 py-16 animate-fade-in motion-reduce:animate-none">
           <img
             src={`${import.meta.env.BASE_URL}logo.svg`}
             alt="ImgCompress"
-            className="w-20 h-20 rounded-3xl shadow-2xl shadow-primary/30 animate-slide-up animate-pulse-glow"
+            className="w-20 h-20 rounded-3xl shadow-2xl shadow-primary/30"
           />
-          <div className="space-y-3 animate-slide-up" style={{ animationDelay: '100ms' }}>
+          <div className="space-y-3">
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold gradient-text leading-normal">
               {t('appTitle')}
             </h1>
@@ -151,8 +162,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ onClose }) => {
           <button
             onClick={onClose}
             autoFocus
-            className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-primary to-primary-dark hover:from-primary-light hover:to-primary text-white font-medium rounded-2xl transition-all duration-300 shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:scale-105 active:scale-95 focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/40 animate-slide-up group"
-            style={{ animationDelay: '200ms' }}
+            className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-primary to-primary-dark hover:from-primary-light hover:to-primary text-white font-medium rounded-2xl transition-all duration-300 shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:scale-105 active:scale-95 focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/40 group"
           >
             {t('onboardStart')}
             <ArrowRightIcon className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
@@ -162,9 +172,9 @@ const Onboarding: React.FC<OnboardingProps> = ({ onClose }) => {
           <button
             onClick={scrollToContent}
             aria-label={t('onboardFeaturesTitle')}
-            className="absolute bottom-6 left-1/2 -translate-x-1/2 text-zinc-400 dark:text-zinc-500 hover:text-primary-light transition-colors animate-bounce"
+            className="absolute bottom-6 left-1/2 -translate-x-1/2 text-zinc-400 dark:text-zinc-500 hover:text-primary-light transition-colors"
           >
-            <ChevronDownIcon className="w-6 h-6" />
+            <ChevronDownIcon className="w-6 h-6 animate-soft-float" />
           </button>
         </section>
 

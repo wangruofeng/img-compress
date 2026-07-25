@@ -132,9 +132,12 @@ try {
 ### Tailwind CSS
 
 - **Class ordering**: Group related classes logically
-- **Color palette**: Uses `emerald` for primary, `gray` for neutral
+- **Color palette**: `primary` is **violet** (`#8b5cf6` + `primary-light`/`primary-dark`/`primary-glow`) with an amber `accent`; neutrals are **`zinc`** (not `gray`). `emerald`/`amber`/`red`/`sky` are **status-only** (saved-space, warning, error, kept-original) — never brand chrome. See `DESIGN.md` for the full system.
 - **Responsive**: `sm:`, `md:`, `lg:`, `xl:` prefixes for breakpoints
-- **Animation**: `animate-fade-in`, `animate-spin` classes available
+- **Glassmorphism**: Containers use the `.glass` / `.glass-elevated` component classes (defined in `index.css`) over the body gradient. Always specify both `bg-… ` and `dark:bg-…` for custom surfaces.
+- **Flat icon buttons**: Header (`flatButtonClass`) and Onboarding (`headerButtonClass`) controls share a borderless `w-11 h-11` token with color-only hover; the `LanguageSwitcher` trigger mirrors its height. Keep all three in sync.
+- **Animation**: `animate-fade-in`, `animate-slide-up`, `animate-scale-in`, `animate-soft-float`, `animate-spin` (defined in `tailwind.config.js`). Ambient/entrance animations that may affect vestibular comfort pair with `motion-reduce:animate-none`.
+- **Dark mode is the default**: toggled via `html.dark` / `html.light` (`ThemeContext`). Design dark-first.
 
 ### State Management
 
@@ -150,12 +153,21 @@ img-compress/
 ├── contexts/           # React Context providers
 │   ├── LanguageContext.tsx # i18n context
 │   └── ThemeContext.tsx    # Dark/light theme context
+├── locales/            # i18n translation strings (translations.ts)
 ├── utils/             # Pure functions (compression, helpers)
 ├── types.ts           # TypeScript interfaces
 ├── App.tsx            # Main app with state orchestration
 ├── index.tsx          # Entry point
 └── vite.config.ts     # Vite configuration
 ```
+
+### Deep-dive docs
+
+| Topic | Where |
+|---|---|
+| Design system (colors, type, glass tokens, motion, components) | [DESIGN.md](DESIGN.md) |
+| Deployment (Cloudflare Pages + GitHub Pages) | [DEPLOY.md](DEPLOY.md) |
+| Release history | [CHANGELOG.md](CHANGELOG.md) |
 
 ### File Rules
 

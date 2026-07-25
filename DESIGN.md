@@ -1,371 +1,176 @@
 ---
-version: "2.0.0"
-name: "ImgCompress — Smart Image Compression (Mistral-inspired)"
-description: "ImgCompress is a browser-based image compression tool redesigned with a Mistral AI-inspired design language. The UI features cream-yellow surfaces, saturated orange (#FF6D00) primary accent, flat editorial geometry (8px buttons, 12px cards), and the signature sunset stripe gradient band at the page foot. The system pairs Playfair Display (near-serif, for hero) with Inter (UI sans) and uses JetBrains Mono for code."
+version: "2.1.0"
+name: "ImgCompress Design System"
+description: "ImgCompress is a browser-based image compression tool with a dark-first, glassmorphic design language. The system is built around a violet primary (#8b5cf6) with an amber accent, zinc neutral surfaces, and frosted-glass (.glass / .glass-elevated) containers over a subtly animated gradient background. Display type is Outfit paired with DM Sans for body text."
 colors:
-  primary: "#FF6D00"
-  primary-deep: "#E65100"
-  primary-light: "#FF8F00"
-  primary-glow: "#FFB74D"
-  sunshine-300: "#FFB74D"
-  sunshine-500: "#FF9800"
-  sunshine-700: "#F57C00"
-  yellow-saturated: "#FFC107"
-  cream: "#FFF8E1"
-  cream-soft: "#FFFDE7"
-  cream-deeper: "#FFE0B2"
-  beige-deep: "#FFCC80"
-  canvas: "#FFFFFF"
-  surface: "#F5F5F5"
-  surface-cream: "#FFFBF0"
-  surface-code: "#1E1E1E"
-  ink: "#1A1A1A"
-  ink-tint: "#333333"
-  charcoal: "#333333"
-  slate: "#666666"
-  steel: "#999999"
-  stone: "#B0B0B0"
-  muted: "#CCCCCC"
-  hairline: "#E5E5E5"
-  hairline-soft: "#F0F0F0"
-  hairline-strong: "#CCCCCC"
-  on-dark: "#FFFFFF"
-  on-dark-muted: "rgba(255,255,255,0.7)"
-  on-cream: "#1A1A1A"
-  link: "#FF6D00"
+  primary: "#8b5cf6"
+  primary-light: "#a78bfa"
+  primary-dark: "#7c3aed"
+  primary-glow: "#c4b5fd"
+  accent: "#f59e0b"
+  # Status colors — used only for semantic states, never as brand accent
+  success: "#10b981" # emerald-500 — saved-space badges
+  warning: "#f59e0b" # amber-500 — invalid-file alert, mid quality
+  danger: "#ef4444" # red-500 — errors, low quality
+  info: "#0ea5e9" # sky-500 — kept-original badge
+  # Neutrals (Tailwind zinc)
+  background: "#09090b" # zinc-950 (dark default)
+  surface: "#18181b" # zinc-900
+  surface-elevated: "#27272a" # zinc-800
+  text-primary-dark: "#e4e4e7" # zinc-200 on dark
+  text-primary-light: "#1e293b" # slate-800 on light
+  text-secondary: "#a1a1aa" # zinc-500 / dark:zinc-400
 typography:
-  hero-display:
-    fontFamily: "Playfair Display"
-    fontSize: "84px"
-    fontWeight: 400
-    lineHeight: 1.05
-    letterSpacing: "-1.5px"
-  display-lg:
-    fontFamily: "Playfair Display"
-    fontSize: "64px"
-    fontWeight: 400
-    lineHeight: 1.10
-    letterSpacing: "-1px"
-  heading-1:
-    fontFamily: "Playfair Display"
-    fontSize: "52px"
-    fontWeight: 400
-    lineHeight: 1.15
-    letterSpacing: "-0.5px"
-  heading-2:
-    fontFamily: "Inter"
-    fontSize: "36px"
-    fontWeight: 500
-    lineHeight: 1.20
-    letterSpacing: "-0.5px"
-  heading-3:
-    fontFamily: "Inter"
-    fontSize: "28px"
-    fontWeight: 500
-    lineHeight: 1.25
-  heading-4:
-    fontFamily: "Inter"
-    fontSize: "22px"
-    fontWeight: 500
-    lineHeight: 1.30
-  subtitle:
-    fontFamily: "Inter"
-    fontSize: "18px"
-    fontWeight: 400
-    lineHeight: 1.50
-  body-md:
-    fontFamily: "Inter"
-    fontSize: "16px"
-    fontWeight: 400
-    lineHeight: 1.55
-  body-sm:
-    fontFamily: "Inter"
-    fontSize: "14px"
-    fontWeight: 400
-    lineHeight: 1.50
-  button-md:
-    fontFamily: "Inter"
-    fontSize: "14px"
-    fontWeight: 500
-    lineHeight: 1.30
-  caption:
-    fontFamily: "Inter"
-    fontSize: "13px"
-    fontWeight: 400
-    lineHeight: 1.40
-  micro:
-    fontFamily: "Inter"
-    fontSize: "12px"
-    fontWeight: 500
-    lineHeight: 1.40
-  micro-uppercase:
-    fontFamily: "Inter"
-    fontSize: "11px"
-    fontWeight: 600
-    lineHeight: 1.40
-    letterSpacing: "1px"
-  code-md:
-    fontFamily: "JetBrains Mono"
-    fontSize: "14px"
-    fontWeight: 400
-    lineHeight: 1.50
-rounded:
-  xs: "4px"
-  sm: "6px"
-  md: "8px"
-  lg: "12px"
-  xl: "16px"
-  xxl: "20px"
-  full: "9999px"
-spacing:
-  base: "4px"
-  xxs: "4px"
-  xs: "8px"
-  sm: "12px"
-  md: "16px"
-  lg: "20px"
-  xl: "24px"
-  xxl: "32px"
-  xxxl: "40px"
-  section-sm: "48px"
-  section: "64px"
-  section-lg: "96px"
-  hero: "120px"
-components:
-  button-primary:
-    backgroundColor: "#FF6D00"
-    textColor: "#FFFFFF"
-    typography: "{typography.button-md}"
-    rounded: "{rounded.md}"
-    padding: "10px 20px"
-    border: "none"
-    hoverEffect: "background #E65100"
-  button-dark:
-    backgroundColor: "#1A1A1A"
-    textColor: "#FFFFFF"
-    typography: "{typography.button-md}"
-    rounded: "{rounded.md}"
-    padding: "10px 20px"
-    border: "none"
-  button-cream:
-    backgroundColor: "#FFF8E1"
-    textColor: "#1A1A1A"
-    typography: "{typography.button-md}"
-    rounded: "{rounded.md}"
-    padding: "10px 20px"
-    border: "1px solid #FFCC80"
-  button-secondary:
-    backgroundColor: "transparent"
-    textColor: "#1A1A1A"
-    typography: "{typography.button-md}"
-    rounded: "{rounded.md}"
-    padding: "10px 20px"
-    border: "1px solid #CCCCCC"
-  button-link:
-    backgroundColor: "transparent"
-    textColor: "#FF6D00"
-    padding: "0"
-    border: "none"
-  card-base:
-    backgroundColor: "#FFFFFF"
-    rounded: "{rounded.lg}"
-    padding: "24px"
-    border: "1px solid #F0F0F0"
-    shadow: "rgba(0, 0, 0, 0.04) 0px 4px 12px 0px"
-  card-feature:
-    backgroundColor: "#FFFFFF"
-    rounded: "{rounded.lg}"
-    padding: "32px"
-    border: "1px solid #F0F0F0"
-  card-cream:
-    backgroundColor: "#FFF8E1"
-    color: "#1A1A1A"
-    rounded: "{rounded.lg}"
-    padding: "32px"
-    border: "1px solid #FFCC80"
-  glass-default:
-    backgroundColor: "rgba(24, 24, 27, 0.7)"
-    backdropFilter: "blur(12px)"
-    border: "1px solid rgba(255,255,255,0.08)"
-  glass-elevated:
-    backgroundColor: "rgba(39, 39, 42, 0.8)"
-    backdropFilter: "blur(24px)"
-    border: "1px solid rgba(255,255,255,0.1)"
-  badge-orange:
-    backgroundColor: "#FF6D00"
-    textColor: "#FFFFFF"
-    typography: "{typography.caption}"
-    rounded: "{rounded.full}"
-    padding: "4px 10px"
-    fontWeight: 600
-  badge-cream:
-    backgroundColor: "#FFE0B2"
-    textColor: "#1A1A1A"
-    typography: "{typography.caption}"
-    rounded: "{rounded.full}"
-    padding: "4px 10px"
-    fontWeight: 600
-  filter-tag:
-    backgroundColor: "#FFFFFF"
-    textColor: "#666666"
-    border: "1px solid #E5E5E5"
-    rounded: "{rounded.md}"
-    padding: "4px 12px"
-    fontSize: "13px"
-    fontWeight: 500
-  filter-tag-active:
-    backgroundColor: "#FF6D00"
-    textColor: "#FFFFFF"
-    border: "1px solid #FF6D00"
-  text-input:
-    backgroundColor: "#FFFFFF"
-    color: "#1A1A1A"
-    rounded: "{rounded.md}"
-    padding: "12px 16px"
-    height: "44px"
-    border: "1px solid #CCCCCC"
-    focusBorder: "2px solid #FF6D00"
-  sunset-stripe:
-    height: "8px"
-    gradient: "linear-gradient(90deg, #FF6D00 0%, #F57C00 25%, #FF9800 50%, #FFC107 75%, #FFF8E1 100%)"
+  display:
+    fontFamily: "Outfit"
+    usage: "Headings, app title, button labels (font-display)"
+    weights: "400 / 500 / 600 / 700 / 800"
+  body:
+    fontFamily: "DM Sans"
+    usage: "All body copy, labels, captions — applied globally via * selector"
+    weights: "300 / 400 / 500 / 600 / 700"
+  gradient-text:
+    usage: "App title & hero heading"
+    dark: "linear-gradient(135deg, #c4b5fd 0%, #8b5cf6 50%, #f59e0b 100%)"
+    light: "linear-gradient(135deg, #7c3aed 0%, #8b5cf6 50%, #d97706 100%)"
+    note: "background-clip: text with descender padding compensation (see index.css)"
+animation:
+  fade-in: "fadeIn 0.5s ease-out — generic enter"
+  slide-up: "slideUp 0.5s ease-out — enter from below"
+  scale-in: "scaleIn 0.3s ease-out — modal/overlay enter"
+  soft-float: "softFloat 2.8s ease-in-out infinite — gentle vertical bob (scroll cue)"
+  spin: "animate-spin — loading spinners"
 ---
 
 ## Overview
 
-- **Composition cues:**
-  - Layout: Centered column with max-width constraints (1280px outer, 896px content)
-  - Framing: Flat editorial design, no glassmorphism
-  - Surfaces: White cards + cream panels (#FFF8E1)
-  - Grid: Responsive image cards (1→2→3→4 columns)
-  - Signature: Horizontal sunset stripe gradient band at page bottom
+- **Dark-first.** Dark mode is the default; light mode is a class-toggled (`html.light`) variant, not an afterthought.
+- **Glassmorphism is core.** Frosted containers (`.glass`, `.glass-elevated`) sit over an animated gradient body background. Both modes blur; only the surface tint differs.
+- **Violet + amber, on zinc.** Primary CTA/highlight color is violet (`#8b5cf6`); amber (`#f59e0b`) is the secondary accent. Emerald/amber/red are **status-only** — they encode quality tiers and outcomes, never brand chrome.
+- **Flat icon buttons.** Header/navigation controls are borderless `44×44` icon buttons with color-only hover feedback (no filled backgrounds at rest). See the `flatButtonClass` token below.
 
-## Colors
+## Color
 
-The color system uses a warm orange/yellow/cream palette inspired by Mistral AI. Light mode is the primary experience.
+The palette is **not** a warm/orange/cream system. Primary is violet, neutrals are zinc.
 
-- **Primary (#FF6D00):** Saturated orange for primary CTAs, active states, and accent elements.
-- **Primary Deep (#E65100):** Pressed and hover states for primary buttons.
-- **Sunshine 500/700:** Mid-to-deep orange stops in the sunset stripe gradient.
-- **Yellow Saturated (#FFC107):** Pure brand yellow, brightest sunset stripe stop.
-- **Cream (#FFF8E1):** Warm yellow-cream surface for feature cards, the dropzone, and settings panel.
-- **Beige Deep (#FFCC80):** Border color for cream surfaces and cream buttons.
-- **Canvas (#FFFFFF):** Page background and default card surface.
-- **Surface (#F5F5F5):** Subtle gray background for doodle space.
-- **Ink (#1A1A1A):** Primary text color (nearly black).
-- **Slate (#666666):** Secondary text and labels.
-- **Steel (#999999):** Tertiary text, captions, muted elements.
+| Token | Value | Tailwind | Role |
+|---|---|---|---|
+| primary | `#8b5cf6` | `primary` / `primary` | CTA buttons, active states, focus rings, highlights |
+| primary-light | `#a78bfa` | `primary-light` | Hover/active text on dark, processing spinner |
+| primary-dark | `#7c3aed` | `primary-dark` | Gradient end stop, hover/active text on light |
+| primary-glow | `#c4b5fd` | `primary-glow` | Scrollbar gradient, glow shadows |
+| accent | `#f59e0b` | `accent` | Secondary gradient stop (dropzone glow) |
+| background | `#09090b` | `background` / zinc-950 | Dark body base |
+| surface | `#18181b` | `surface` / zinc-900 | Dark cards, scrollbar track |
+| surface-elevated | `#27272a` | `surface-elevated` / zinc-800 | Dark elevated panels |
+
+**Status palette (semantic only):**
+- Success — `emerald-500` (`#10b981`): saved-space badges, high quality tier.
+- Warning — `amber-500` (`#f59e0b`): invalid-file alert, mid quality tier.
+- Danger — `red-500` (`#ef4444`): error overlays, low quality tier.
+- Info — `sky-500` (`#0ea5e9`): "kept original" badge (compression produced no gain).
+
+### Body background
+
+Both modes paint a 135° diagonal gradient over the whole `<body>` (defined in `index.css`, not via Tailwind):
+
+- **Dark (default):** `#09090b → #18181b → #0c0c10`
+- **Light:** `#f8fafc → #f1f5f9 → #e2e8f0`
 
 ## Typography
 
-Typography uses Playfair Display (near-serif, for hero) paired with Inter (geometric sans for everything else). This editorial/sans contrast is a core brand voice.
+- **Outfit** — display font for headings, the app title, and button labels (`font-display`).
+- **DM Sans** — body font, applied globally through the `* { font-family }` rule in `index.css`.
+- **`.gradient-text`** — clips a violet→amber gradient to the text of the app title / hero heading. Includes descender padding compensation so glyphs like `g`/`p` are not clipped. Different gradient stops for light vs dark.
 
-- **Hero Display:** Playfair Display, 84px, weight 400, line-height 1.05, letter-spacing -1.5px.
-- **Display Large:** Playfair Display, 64px, weight 400, line-height 1.10.
-- **Heading 1:** Playfair Display, 52px, weight 400, line-height 1.15.
-- **Heading 2:** Inter, 36px, weight 500, line-height 1.20.
-- **Heading 3:** Inter, 28px, weight 500, line-height 1.25.
-- **Subtitle:** Inter, 18px, weight 400, line-height 1.50.
-- **Body:** Inter, 16px, weight 400, line-height 1.55.
-- **Button:** Inter, 14px, weight 500, line-height 1.30.
-- **Code:** JetBrains Mono, 14px, weight 400, line-height 1.50.
+## Glassmorphism
 
-## Layout
+Two container tiers plus a noise texture, all defined in `index.css` under `@layer components`:
 
-- **Layout type:** Centered column with max-width constraints
-- **Container:** max-w-7xl (1280px) outer, max-w-4xl (896px) content
-- **Base unit:** 4px
-- **Card grid:** 1 column → sm:2 → lg:3 → xl:4 columns, gap 16px
-- **Section padding:** 32px
+| Class | Dark surface | Light surface | Blur | Border |
+|---|---|---|---|---|
+| `.glass` | `rgba(24,24,27,0.7)` | `rgba(255,255,255,0.7)` | 20px | `1px rgba(255,255,255,0.08)` / `rgba(0,0,0,0.08)` |
+| `.glass-elevated` | `rgba(39,39,42,0.8)` | `rgba(255,255,255,0.9)` | 24px | `1px rgba(255,255,255,0.1)` / `rgba(0,0,0,0.1)` |
 
-## Elevation & Depth
+- `.noise-bg::after` overlays a faint (opacity 0.03) fractal-noise SVG in dark mode for texture.
+- **Header** inlines its own frosted treatment rather than reusing `.glass`: `bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl backdrop-saturate-150` with a `border-zinc-200/70` hairline.
 
-The system is predominantly flat with minimal shadow elevation.
+## Radii
 
-- **Level 0:** No shadow — default state for cards and containers.
-- **Level 1 (card):** `rgba(0,0,0,0.04) 0px 4px 12px 0px` — standard cards.
-- **Level 2 (hover):** `rgba(0,0,0,0.08) 0px 8px 24px -4px` — card hover state.
-- **Level 3 (elevated):** `rgba(0,0,0,0.08) 0px 12px 24px -4px` — elevated mockups.
-- **Level 4 (modal):** `rgba(0,0,0,0.12) 0px 16px 48px -8px` — modals, dropdowns.
+The system leans on `rounded-xl` (12px) and `rounded-2xl` (16px); `rounded-lg` (8px) is reserved for small in-card badges, and `rounded-full` for pills/remove buttons.
 
-### Sunset Stripe
-The horizontal sunset band at the page bottom is the brand's signature decorative element — an 8px full-width gradient bar running orange → yellow → cream.
-
-## Shapes
-
-The radius system is sober and editorial — buttons use `rounded.md` (8px), cards use `rounded.lg` (12px). Fully rounded (`rounded.full`, 9999px) is reserved for badges only.
-
-| Token | Value | Use |
+| Radius | Value | Used for |
 |---|---|---|
-| `{rounded.xs}` | 4px | Small chips |
-| `{rounded.sm}` | 6px | Compact UI |
-| `{rounded.md}` | 8px | Buttons, inputs, filter tags |
-| `{rounded.lg}` | 12px | Cards, modals, panels (dominant card radius) |
-| `{rounded.xl}` | 16px | Larger panels |
-| `{rounded.xxl}` | 20px | Featured emphasis |
-| `{rounded.full}` | 9999px | Badges only (NOT buttons) |
+| `rounded-lg` | 8px | Small result badges, format chips inside containers |
+| `rounded-xl` | 12px | Primary buttons (download), stat badges, alerts |
+| `rounded-2xl` | 16px | Cards (ImageCard, SettingsPanel, Dropzone, modal panels), icon-button tiles |
+| `rounded-full` | 9999px | Toggle track, small pill chips, circular remove button |
 
 ## Components
 
-### Buttons
-- **Primary:** bg #FF6D00, text white, 8px radius. Hover: #E65100.
-- **Dark:** bg #1A1A1A, text white, 8px radius. For dark-on-cream actions.
-- **Cream:** bg #FFF8E1, text #1A1A1A, border #FFCC80, 8px radius.
-- **Secondary:** transparent, text #1A1A1A, border #CCCCCC, 8px radius.
-- **Link:** transparent, text #FF6D00, no padding.
-- All buttons use 10px 20px padding and 14px/500 font. No pill buttons.
+### Shared flat-button token (Header + Onboarding)
 
-### Cards
-- **card-base:** White (#FFFFFF), 12px radius, 24px padding, 1px hairline border, subtle shadow. For ImageCard.
-- **card-feature:** White, 12px radius, 32px padding, hairline border. For modals.
-- **card-cream:** Cream (#FFF8E1), 12px radius, beige-deep border. For Dropzone, SettingsPanel.
+Header navigation controls (Help, Theme toggle, GitHub link) and the Onboarding top-bar controls (Close, Theme toggle) share one borderless `44×44` button class so the language switcher aligns across pages:
 
-### Badges
-- **badge-orange:** bg #FF6D00, text white, full radius. For compression ratio.
-- **badge-cream:** bg #FFE0B2, text #1A1A1A, full radius.
+```ts
+const flatButtonClass =
+  'flex items-center justify-center w-11 h-11 text-zinc-500 dark:text-zinc-400 hover:text-primary-dark dark:hover:text-primary-light transition-colors';
+```
 
-### Filter Tags
-- **inactive:** White bg, #666 text, #E5E5E5 border, 8px radius. For format selection.
-- **active:** Orange bg, white text. Selected format tag.
-
-### Inputs
-- **text-input:** White bg, 8px radius, 44px height, #CCCCCC border. Focus: 2px #FF6D00 border.
-
-### Sunset Stripe
-- 8px tall, full-width gradient: `#FF6D00 → #F57C00 → #FF9800 → #FFC107 → #FFF8E1`
-- Placed at the bottom of the page, above any footer-like content.
-- Dark mode: `#E65100 → #F57C00 → #FF9800 → #FFC107 → #333333`
+- No background, no border, no radius — color-only hover feedback.
+- The `LanguageSwitcher` trigger mirrors this: `h-11 px-3.5 text-[13px]` with the same text/hover colors, so all header controls share one visual height.
+- **Keep these in sync.** If you change one, change all three (`Header.flatButtonClass`, `Onboarding.headerButtonClass`, `LanguageSwitcher` trigger).
 
 ### Header
-- White nav header with 95% opacity + backdrop blur, 1px bottom hairline.
-- Clean bar: logo + title left, nav links + theme toggle + language switcher right.
-- 64px height.
 
-### Upload Dropzone
-- card-cream container with dashed border.
-- On drag: bg-primary/10, border-primary/2.
-- Format badges as filter-tag group.
+- Sticky, `z-50`, inline frosted glass (`backdrop-blur-xl backdrop-saturate-150`), `h-16`.
+- Left: logo (`logo.svg` via `import.meta.env.BASE_URL`) + title (`.gradient-text`) + subtitle.
+- Right (desktop): Documentation link (pill, `px-3.5 py-1.5 rounded-full`) + GitHub icon button; mobile collapses to icon buttons + language switcher.
 
-### Image Preview Comparison
-- Fullscreen overlay with black/90 background.
-- Split-view slider with orange (#FF6D00) circular drag handle.
-- Image labels in black/60 pill containers.
+### Cards (`glass-elevated` + `rounded-2xl`)
+
+- **ImageCard** — preview (aspect-video, zoom-in cursor), emerald `-N%` badge top-left, circular remove button top-right, processing/error overlays, download button (primary gradient) in footer. Hover lifts border to `border-primary/40` and casts `shadow-primary/10`.
+- **SettingsPanel** — header row + padded body. Lossless toggle is a primary-gradient pill switch; quality slider is a native range input styled via `peer`/absolute-positioned track + thumb, with a traffic-light badge (emerald/amber/red) reflecting the quality tier.
+- **Dropzone** — dashed border, `rounded-2xl`; on drag → `border-primary bg-primary/10 scale-[1.01]` + blurred primary→accent glow.
+
+### Buttons
+
+- **Primary / gradient** — `bg-gradient-to-r from-primary to-primary-dark hover:from-primary-light hover:to-primary` with `shadow-primary/25`, `active:scale-95`. Used for download button, format active state, CTA in Onboarding.
+- **Flat icon** — the shared token above.
+- **Pill link** — `rounded-full` low-emphasis link for "Documentation".
+
+### Quality-tier traffic light
+
+The quality badge and slider fill derive from `settings.quality` (`SettingsPanel.getQualityLabel` / `qualityColor`):
+
+| Quality | Range | Color |
+|---|---|---|
+| High | `≥ 0.8` | emerald (`#10b981 → #34d399`) |
+| Medium | `≥ 0.5` | amber (`#f59e0b → #fbbf24`) |
+| Low | `< 0.5` | red (`#ef4444 → #f87171`) |
+
+## Motion
+
+- Animations live in `tailwind.config.js` under `theme.extend.animation` + `keyframes`: `fade-in`, `slide-up`, `scale-in`, `soft-float`.
+- **`soft-float`** (`softFloat 2.8s`) is the Onboarding scroll-cue bob — a gentle `translateY(5px)` with opacity breathing between 0.55 and 1.
+- **Reduced motion:** entrance/hero animations that may cause vestibular discomfort pair with `motion-reduce:animate-none` (e.g. the Onboarding hero `animate-fade-in motion-reduce:animate-none`). New ambient animations should follow the same convention.
+- **Scroll-lock compensation:** when a full-screen overlay (Onboarding) locks `body` scroll, the now-hidden scrollbar width is read once and applied as `body { padding-right }` to prevent sideways layout shift; both `overflow` and `padding-right` are restored from captured previous values on cleanup.
 
 ## Do's and Don'ts
 
 ### Do
-- Use cream (#FFF8E1) surfaces for distinctive containers (dropzone, settings).
-- Apply `rounded.md` (8px) to buttons and `rounded.lg` (12px) to cards.
-- Use orange (#FF6D00) for primary CTAs and active states.
-- Include the sunset stripe band at the bottom of the page.
-- Use `font-medium` for button labels and `font-semibold` for headings.
+- Build containers on `.glass` / `.glass-elevated` over the body gradient — that is the intended depth language.
+- Use `primary` (violet) for CTAs, active states, and focus rings (`focus-visible:ring-primary/40`).
+- Encode outcome/quality with the **status palette only** (emerald/amber/red/sky), never as decoration.
+- Reuse the shared flat-button token for new header/overlay icon controls; keep the three call sites in sync.
+- Pair ambient/entrance animations with `motion-reduce:animate-none`.
 
 ### Don't
-- Don't use pill buttons (9999px) — buttons are `rounded.md` (8px).
-- Don't reintroduce glassmorphism or gradient border shells.
-- Don't stray from the orange/yellow/cream warm palette.
-- Don't add shadows to flat cards.
-- Don't use violet/blue accent colors — this is not the previous design.
+- Don't introduce orange/cream surfaces, Playfair Display, or pill-shaped primary buttons — those belong to an abandoned spec (v2.0.0) that was never implemented and has been removed.
+- Don't strip glassmorphism in favor of flat opaque cards — the frosted blur is load-bearing for this design.
+- Don't use Tailwind `gray-*` for neutrals; the system is consistently on `zinc-*`.
+- Don't add filled backgrounds to the flat header controls at rest — they are color-only by design.
 
 ## Light / Dark Mode
 
-Light mode is the primary experience. Dark mode inverts backgrounds and adjusts text colors while keeping the orange accent palette. Dark mode surfaces use #121212 (body), #1E1E1E (cards), #2A2A2A (cream-equivalent).
+Dark is the default. The `ThemeContext` toggles `html.dark` / `html.light`. Light mode re-tints `.glass*`, `.gradient-text`, the body gradient, and inverts scrollbar track colors while keeping the violet primary palette intact. When adding a surface, always specify both `bg-… ` and `dark:bg-…` variants rather than a single fixed color.

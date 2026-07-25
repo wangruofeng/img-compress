@@ -38,9 +38,9 @@ const LanguageSwitcher: React.FC = () => {
         aria-haspopup="listbox"
         aria-expanded={isDropdownOpen}
         aria-label={t('languageLabel')}
-        className="flex items-center justify-center gap-2 h-9 px-3 rounded-lg text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+        className="flex items-center justify-center gap-2 h-11 px-3.5 text-[13px] font-medium text-zinc-500 dark:text-zinc-400 hover:text-primary-dark dark:hover:text-primary-light transition-colors"
       >
-        <GlobeIcon className="w-4 h-4" />
+        <GlobeIcon className="w-5 h-5" />
         <span className="hidden sm:inline">{languages.find(l => l.code === language)?.label}</span>
       </button>
       {isDropdownOpen && (
