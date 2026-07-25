@@ -148,7 +148,8 @@ try {
 img-compress/
 ├── components/          # React components
 ├── contexts/           # React Context providers
-├── locales/           # i18n translations
+│   ├── LanguageContext.tsx # i18n context
+│   └── ThemeContext.tsx    # Dark/light theme context
 ├── utils/             # Pure functions (compression, helpers)
 ├── types.ts           # TypeScript interfaces
 ├── App.tsx            # Main app with state orchestration
@@ -200,7 +201,6 @@ return new Promise((resolve, reject) => {
 ## Important Notes
 
 - **Browser-only**: No Node.js server code, all APIs are DOM/Canvas
-- **No auth**: Project references `GEMINI_API_KEY` in config but isn't used
 - **i18n**: All user-facing strings go through `useLanguage().t()` hook
 - **State immutability**: Always create new objects/arrays when updating state (`[...prev, newItem]`)
 

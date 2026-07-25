@@ -24,6 +24,16 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     localStorage.setItem('app-language', lang);
   };
 
+  // Keep <html lang> in sync for accessibility and SEO
+  useEffect(() => {
+    const langMap: Record<Language, string> = {
+      en: 'en',
+      zh: 'zh-CN',
+      'zh-hk': 'zh-HK'
+    };
+    document.documentElement.lang = langMap[language];
+  }, [language]);
+
   const t = (key: TranslationKey): string => {
     return translations[language][key] || translations['en'][key];
   };

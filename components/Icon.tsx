@@ -13,7 +13,16 @@ import {
   X,
   Minimize2,
   Sun,
-  Moon
+  Moon,
+  ShieldCheck,
+  Layers,
+  ClipboardPaste,
+  RotateCw,
+  ChevronsLeftRight,
+  Sparkles,
+  Gem,
+  CircleHelp,
+  ChevronDown
 } from 'lucide-react';
 
 // Exporting individual icons for cleaner usage
@@ -32,3 +41,12 @@ export const CloseIcon = X;
 export const CompressIcon = Minimize2;
 export const SunIcon = Sun;
 export const MoonIcon = Moon;
+export const ShieldIcon = ShieldCheck;
+export const BatchIcon = Layers;
+export const PasteIcon = ClipboardPaste;
+export const RetryIcon = RotateCw;
+export const CompareIcon = ChevronsLeftRight;
+export const SparklesIcon = Sparkles;
+export const GemIcon = Gem;
+export const HelpIcon = CircleHelp;
+export const ChevronDownIcon = ChevronDown;

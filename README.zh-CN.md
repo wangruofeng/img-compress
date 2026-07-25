@@ -129,7 +129,8 @@ img-compress/
 │   ├── SettingsPanel.tsx # 设置面板
 │   └── Icon.tsx        # 图标组件
 ├── contexts/           # React Context
-│   └── LanguageContext.tsx # 多语言上下文
+│   ├── LanguageContext.tsx # 多语言上下文
+│   └── ThemeContext.tsx    # 深色/浅色主题上下文
 ├── locales/           # 国际化文件
 │   └── translations.ts # 翻译文本
 ├── utils/             # 工具函数

@@ -129,7 +129,8 @@ img-compress/
 │   ├── SettingsPanel.tsx # Settings panel
 │   └── Icon.tsx        # Icon component
 ├── contexts/           # React Context
-│   └── LanguageContext.tsx # Multi-language context
+│   ├── LanguageContext.tsx # Multi-language context
+│   └── ThemeContext.tsx    # Dark/light theme context
 ├── locales/           # Internationalization files
 │   └── translations.ts # Translation texts
 ├── utils/             # Utility functions
