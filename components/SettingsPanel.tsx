@@ -30,6 +30,15 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ settings, onSettingsChang
     });
   };
 
+  const handleMaxWidthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // 只允许整数数字，过滤掉所有非数字字符
+    const digits = e.target.value.replace(/\D/g, '');
+    onSettingsChange({
+      ...settings,
+      maxWidth: digits === '' ? 0 : parseInt(digits, 10)
+    });
+  };
+
   const handleMouseDown = () => {
     setIsDragging(true);
   };
@@ -216,6 +225,22 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ settings, onSettingsChang
                 );
               })}
             </div>
+
+            {/* 自定义宽度输入 */}
+            <div className="relative">
+              <input
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                value={settings.maxWidth === 0 ? '' : settings.maxWidth}
+                onChange={handleMaxWidthChange}
+                placeholder={t('maxWidthCustom')}
+                aria-label={t('maxWidthLabel')}
+                className="w-full py-2 pl-3 pr-10 text-sm rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800/50 text-zinc-800 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+              />
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-zinc-400 dark:text-zinc-500 pointer-events-none">px</span>
+            </div>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">{t('maxWidthHint')}</p>
           </div>
         </div>
 
