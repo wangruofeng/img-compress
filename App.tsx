@@ -311,7 +311,13 @@ function AppContent() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 space-y-4">
         <section className="max-w-4xl mx-auto space-y-4">
             <div className="text-center space-y-2 animate-fade-in px-4 pt-6">
-                <h2 className="text-3xl md:text-4xl font-display font-bold gradient-text">{t('heroTitle')}</h2>
+                {/* The Onboarding overlay carries the h1 while open (what crawlers render);
+                    the main hero takes over as h1 once the overlay is dismissed */}
+                {showOnboarding ? (
+                    <h2 className="text-3xl md:text-4xl font-display font-bold gradient-text">{t('heroTitle')}</h2>
+                ) : (
+                    <h1 className="text-3xl md:text-4xl font-display font-bold gradient-text">{t('heroTitle')}</h1>
+                )}
                 <p className="text-zinc-500 dark:text-zinc-400 text-base leading-relaxed">{t('heroSubtitle')}</p>
             </div>
 

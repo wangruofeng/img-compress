@@ -32,6 +32,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
       'zh-hk': 'zh-HK'
     };
     document.documentElement.lang = langMap[language];
+    document.title = translations[language].pageTitle;
   }, [language]);
 
   const t = (key: TranslationKey): string => {

@@ -1,6 +1,7 @@
 export const translations = {
   en: {
     appTitle: "ImgCompress",
+    pageTitle: "ImgCompress - Smart Image Compression",
     appSubtitle: "Secure Client-Side Compression",
     documentation: "Documentation",
     github: "GitHub",
@@ -61,7 +62,7 @@ export const translations = {
     featureBatchDesc: "Compress multiple images at once and download them all as a zip.",
     featurePasteTitle: "Drag, drop or paste",
     featurePasteDesc: "Drop files, click to browse, or paste images straight from the clipboard.",
-    onboardTagline: "Free, private, in-browser image compression",
+    heroKeyword: "Free, private, in-browser image compression",
     onboardHeroSub: "Shrink JPG, PNG and WebP images without uploading anything. Smart format picks, batch processing and a pixel-perfect lossless mode — all in your browser.",
     onboardStart: "Get Started",
     onboardFeaturesTitle: "Why ImgCompress",
@@ -91,6 +92,7 @@ export const translations = {
   },
   zh: {
     appTitle: "ImgCompress",
+    pageTitle: "ImgCompress - 免费本地的图片压缩工具",
     appSubtitle: "安全且纯净的客户端压缩",
     documentation: "文档",
     github: "GitHub",
@@ -151,7 +153,7 @@ export const translations = {
     featureBatchDesc: "一次处理多张图片，并打包为 zip 一键下载。",
     featurePasteTitle: "拖拽粘贴即用",
     featurePasteDesc: "支持拖拽文件、点击选择，或直接粘贴剪贴板中的图片。",
-    onboardTagline: "免费、安全、纯本地的图片压缩工具",
+    heroKeyword: "免费、安全、纯本地的图片压缩工具",
     onboardHeroSub: "无需上传即可压缩 JPG、PNG 和 WebP 图片。智能格式推荐、批量处理、像素级无损模式——一切都在您的浏览器中完成。",
     onboardStart: "开始使用",
     onboardFeaturesTitle: "为什么选择 ImgCompress",
@@ -181,6 +183,7 @@ export const translations = {
   },
   'zh-hk': {
     appTitle: "ImgCompress",
+    pageTitle: "ImgCompress - 免費本地圖片壓縮工具",
     appSubtitle: "安全且純淨的用戶端壓縮",
     documentation: "文件",
     github: "GitHub",
@@ -241,7 +244,7 @@ export const translations = {
     featureBatchDesc: "一次處理多張圖片，並打包為 zip 一鍵下載。",
     featurePasteTitle: "拖曳貼上即用",
     featurePasteDesc: "支援拖曳文件、點擊選擇，或直接貼上剪貼簿中的圖片。",
-    onboardTagline: "免費、安全、純本地的圖片壓縮工具",
+    heroKeyword: "免費、安全、純本地的圖片壓縮工具",
     onboardHeroSub: "無需上傳即可壓縮 JPG、PNG 和 WebP 圖片。智能格式推薦、批量處理、像素級無損模式——一切都在您的瀏覽器中完成。",
     onboardStart: "開始使用",
     onboardFeaturesTitle: "為什麼選擇 ImgCompress",

@@ -22,7 +22,7 @@ const Header: React.FC<HeaderProps> = ({ onShowOnboarding }) => {
           <div className="flex shrink-0 items-center gap-3">
             <img src={`${import.meta.env.BASE_URL}logo.svg`} alt="ImgCompress" className="w-10 h-10 rounded-xl" />
             <div>
-              <h1 className="text-xl font-display font-bold gradient-text">{t('appTitle')}</h1>
+              <span className="text-xl font-display font-bold gradient-text">{t('appTitle')}</span>
               <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium hidden sm:block">{t('appSubtitle')}</p>
             </div>
           </div>

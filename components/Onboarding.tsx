@@ -149,12 +149,14 @@ const Onboarding: React.FC<OnboardingProps> = ({ onClose }) => {
             className="w-20 h-20 rounded-3xl shadow-2xl shadow-primary/30"
           />
           <div className="space-y-3">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold gradient-text leading-normal">
-              {t('appTitle')}
+            <h1 className="space-y-2">
+              <span className="block text-4xl sm:text-5xl md:text-6xl font-display font-bold gradient-text leading-normal">
+                {t('appTitle')}
+              </span>
+              <span className="block text-lg sm:text-xl font-medium text-zinc-700 dark:text-zinc-300">
+                {t('heroKeyword')}
+              </span>
             </h1>
-            <p className="text-lg sm:text-xl font-medium text-zinc-700 dark:text-zinc-300">
-              {t('onboardTagline')}
-            </p>
             <p className="max-w-2xl mx-auto text-zinc-500 dark:text-zinc-400 leading-relaxed">
               {t('onboardHeroSub')}
             </p>
