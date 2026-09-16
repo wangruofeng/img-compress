@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://img-compress.wangruofeng007.com/sitemap.xml
