@@ -127,6 +127,8 @@ img-compress/
 │   ├── ImageCard.tsx   # Image card component
 │   ├── PreviewModal.tsx # Preview comparison modal
 │   ├── SettingsPanel.tsx # Settings panel
+│   ├── LanguageSwitcher.tsx # Language switcher
+│   ├── Onboarding.tsx  # Onboarding tips
 │   └── Icon.tsx        # Icon component
 ├── contexts/           # React Context
 │   ├── LanguageContext.tsx # Multi-language context

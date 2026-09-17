@@ -13,6 +13,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 简体中文
 
+### [1.4.0] - 2026-09-17
+
+#### ✨ 新增功能
+- 🚀 **迁移至 Cloudflare Pages** - 主部署切换到自定义域名，GitHub Pages 保留为兼容构建
+- 🎯 **最大宽度自定义输入** - 支持自定义整数像素值
+- 🔍 **SEO 审计修复** - 添加 sitemap.xml 与 robots.txt、canonical、meta/OG、结构化数据、缓存与 404 页
+
+#### 🛠️ 技术改进
+- 统一扁平 icon button token，重写 DESIGN.md 对齐实际代码
+- 清理 GEMINI_API_KEY 死配置，补充项目结构文档
+- 精简 _headers，避免与 Pages 默认头重复
+
+---
+
+### [1.3.1] - 2026-04-27
+
+#### 🐛 Bug 修复
+- 修复 favicon 与资源路径在 GitHub Pages 子路径下的部署问题
+
+#### 🎨 界面优化
+- README 按语言拆分为三份，更新 logo 与 UI 细节
+- Header 的 GitHub 文字链接替换为 SVG 图标并适配暗色模式
+
+---
+
 ### [1.3.0] - 2026-02-15
 
 #### 🐛 Bug 修复
@@ -72,6 +97,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## English
 
+### [1.4.0] - Sep 17, 2026
+
+#### ✨ New Features
+- 🚀 **Migrated to Cloudflare Pages** - Primary deployment moved to a custom domain; GitHub Pages kept as a compatibility build
+- 🎯 **Custom max-width input** - Arbitrary integer pixel values supported
+- 🔍 **SEO audit fixes** - Added sitemap.xml & robots.txt, canonical, meta/OG, structured data, caching and 404 page
+
+#### 🛠️ Technical Improvements
+- Unified flat icon button token; rewrote DESIGN.md to match the code
+- Removed dead GEMINI_API_KEY config; documented project structure
+- Trimmed _headers to avoid duplicating Pages defaults
+
+---
+
+### [1.3.1] - Apr 27, 2026
+
+#### 🐛 Bug Fixes
+- Fixed favicon and asset paths under the GitHub Pages sub-path
+
+#### 🎨 UI Improvements
+- Split README by language; refreshed logo and UI details
+- Replaced the Header GitHub text link with an SVG icon adapted to dark mode
+
+---
+
 ### [1.3.0] - Feb 15, 2026
 
 #### 🐛 Bug Fixes
@@ -130,6 +180,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ---
 
 ## 繁體中文
+
+### [1.4.0] - 2026-09-17
+
+#### ✨ 新增功能
+- 🚀 **遷移至 Cloudflare Pages** - 主部署切換到自訂網域，GitHub Pages 保留為相容構建
+- 🎯 **最大寬度自訂輸入** - 支援自訂整數像素值
+- 🔍 **SEO 稽核修復** - 新增 sitemap.xml 與 robots.txt、canonical、meta/OG、結構化資料、快取與 404 頁
+
+#### 🛠️ 技術改進
+- 統一扁平 icon button token，重寫 DESIGN.md 對齊實際程式碼
+- 清理 GEMINI_API_KEY 死配置，補充專案結構文件
+- 精簡 _headers，避免與 Pages 預設頭重複
+
+---
+
+### [1.3.1] - 2026-04-27
+
+#### 🐛 Bug 修復
+- 修復 favicon 與資源路徑在 GitHub Pages 子路徑下的部署問題
+
+#### 🎨 介面優化
+- README 按語言拆分為三份，更新 logo 與 UI 細節
+- Header 的 GitHub 文字連結替換為 SVG 圖示並適配暗色模式
+
+---
 
 ### [1.3.0] - 2026-02-15
 
