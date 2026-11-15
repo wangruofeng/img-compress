@@ -27,10 +27,10 @@
 - 🚀 **Batch Processing** - Compress multiple images simultaneously
 - 🎛️ **Flexible Configuration** - Customize image quality, output format, and max width
 - 🌍 **Multi-language Support** - English, Simplified Chinese, and Traditional Chinese, defaulting to Simplified Chinese
-- 💾 **Format Conversion** - Convert between JPG, PNG, and WebP formats
+- 💾 **Format Conversion** - Convert static images between JPG, PNG, WebP, and AVIF
 - 📱 **Responsive Design** - Perfect for desktop and mobile devices
-- ⚡ **High Performance** - Based on Canvas API, fast compression with low resource usage
-- 🌐 **Online Access** - Deployed to GitHub Pages, accessible online
+- ⚡ **High Performance** - Canvas and on-demand WebAssembly codecs run locally in the browser
+- 🌐 **Online Access** - Cloudflare Pages is the primary deployment target. GitHub Pages is available as a compatibility target.
 - 🌙 **Dark/Light Mode** - Support for dark and light theme switching, theme preference saved automatically
 
 ### 🎬 Demo
@@ -42,11 +42,8 @@
 - **Batch Download** - Download all compressed images with one click
 
 #### Preview Comparison Feature
-The preview interface supports comparing original and compressed images by dragging a vertical split line:
-- Left side of the split line shows compressed image
-- Right side of the split line shows original image
-- Default split line position is at center (50%)
-- Supports mouse and touch drag operations
+
+Switch between Original, Compare, and Compressed. In Compare, the original is on the left and the compressed image is on the right. Click or drag on the image to position the split, or use the arrow keys while the slider is focused. A checkerboard shows transparent areas.
 
 ### 🚀 Quick Start
 
@@ -89,13 +86,14 @@ The preview interface supports comparing original and compressed images by dragg
 
 1. **Upload Images**
    - Click the upload area or drag image files directly
-   - Supports JPG, PNG, WebP formats
+   - Supports JPG, PNG, WebP, AVIF, SVG, GIF, and APNG. SVG, GIF, and APNG are optimized in their original formats. Animated WebP and AVIF are kept as-is.
    - Can upload multiple images simultaneously
 
 2. **Adjust Compression Settings**
-   - **Image Quality**: Choose high, medium, low quality, or customize quality value (0.1-1.0)
-   - **Output Format**: Choose JPEG, PNG, or WebP
+   - **Image Quality** — Adjust the quality slider (0.10–1.00)
+   - **Output Format**: Choose JPEG, PNG, WebP, or AVIF for static raster images
    - **Max Width**: Set maximum width of images (pixels)
+   - Lossless mode applies to static raster images and outputs lossless WebP, with PNG as a fallback. Max width still applies. The app keeps the source when the result is no smaller.
 
 3. **Preview and Download**
    - Click preview button on image card to view comparison
@@ -107,13 +105,14 @@ The preview interface supports comparing original and compressed images by dragg
 
 - **JPEG**: Best for photos, small file size, but doesn't support transparency
 - **PNG**: Supports transparency, good for icons and graphics, but larger file size
-- **WebP**: Modern format, smallest size, best quality, but not supported by some older browsers
+- **WebP** — WebP supports transparency and offers lossy and lossless compression.
+- **AVIF** — AVIF is available for static images and supports transparency.
 
 ### 🛠️ Tech Stack
 
 - **Frontend Framework**: React 19.2.3
 - **Language**: TypeScript 5.8.2
-- **Build Tool**: Vite 6.2.0
+- **Build Tool**: Vite 6
 - **UI Icons**: Lucide React
 - **Styling**: Tailwind CSS (via Vite config)
 

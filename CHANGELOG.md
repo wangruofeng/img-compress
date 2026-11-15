@@ -13,6 +13,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 简体中文
 
+### [1.5.0] - 2026-11-15
+
+- 新增静态 AVIF 导入和输出。SVG、GIF 和 APNG 按原格式优化，保留矢量或动画。
+- 图片预览支持原图、对比、压缩图三种视图。对比支持点击定位、拖动和键盘操作，棋盘格用于显示透明区域。
+- 优化设置面板、图片队列、产品介绍页和语言菜单。页面滚动条使用浅灰色，清空队列确认框更快出现。
+
+---
+
 ### [1.4.0] - 2026-09-17
 
 #### ✨ 新增功能
@@ -97,6 +105,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## English
 
+### [1.5.0] - Nov 15, 2026
+
+- Added static AVIF import and output. SVG, GIF, and APNG are optimized in place, preserving vectors or animation.
+- Preview now offers Original, Compare, and Compressed views. Use clicks, dragging, or the keyboard to position the comparison split. A checkerboard shows transparency.
+- Refined settings, the image queue, the introduction, and the language menu. Scrollbars use neutral gray, and the clear-queue dialog opens faster.
+
+---
+
 ### [1.4.0] - Sep 17, 2026
 
 #### ✨ New Features
@@ -180,6 +196,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ---
 
 ## 繁體中文
+
+### [1.5.0] - 2026-11-15
+
+- 新增靜態 AVIF 匯入與輸出。SVG、GIF 和 APNG 按原格式最佳化，保留向量或動畫。
+- 圖片預覽支援原圖、對比、壓縮圖三種檢視。對比支援點擊定位、拖曳與鍵盤操作，棋盤格用於顯示透明區域。
+- 調整設定面板、圖片佇列、產品介紹頁與語言選單。捲軸改用淺灰色，清空佇列確認視窗更快出現。
+
+---
 
 ### [1.4.0] - 2026-09-17
 

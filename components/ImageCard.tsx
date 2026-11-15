@@ -7,135 +7,109 @@ import { useLanguage } from '../contexts/LanguageContext';
 interface ImageCardProps {
   image: ProcessedImage;
   onRemove: (id: string) => void;
-  onPreview: (image: ProcessedImage) => void;
+  onPreview: (image: ProcessedImage, trigger: HTMLButtonElement) => void;
   onRetry: (id: string) => void;
 }
 
+const actionClass = 'grid h-9 w-9 shrink-0 place-items-center rounded-lg transition-colors focus-visible:outline-primary';
+
 const ImageCard: React.FC<ImageCardProps> = ({ image, onRemove, onPreview, onRetry }) => {
   const { t } = useLanguage();
-
-  const handleDownload = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    downloadCompressedImage(image);
-  };
+  const { originalFile, originalPreviewUrl, compressedBlob, status, keptOriginal, compressionRatio, id } = image;
+  const busy = status === 'pending' || status === 'processing';
 
   return (
-    <div className="glass-elevated rounded-2xl overflow-hidden flex flex-col h-full border border-zinc-200 dark:border-zinc-700/50 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 group">
-      {/* Preview Area */}
-      <div
-        className="aspect-video relative overflow-hidden bg-zinc-200 dark:bg-zinc-800/50 cursor-zoom-in"
-        onClick={() => onPreview(image)}
+    <article className="glass-elevated home-surface flex h-full min-w-0 flex-col rounded-2xl p-2 shadow-md shadow-zinc-900/5 transition-shadow hover:shadow-lg dark:shadow-black/25">
+      <button
+        type="button"
+        onClick={event => onPreview(image, event.currentTarget)}
+        aria-label={`${t('previewLabel')} ${originalFile.name}`}
+        className="group/preview relative block aspect-video w-full cursor-zoom-in overflow-hidden rounded-xl bg-zinc-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary dark:bg-zinc-900/75"
       >
-        <img
-          src={image.originalPreviewUrl}
-          alt={image.originalFile.name}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-        />
+        <img src={originalPreviewUrl} alt="" className="h-full w-full object-contain" />
+        <span className="absolute inset-0 grid place-items-center bg-black/0 transition-colors group-hover/preview:bg-black/20 group-focus-visible/preview:bg-black/20">
+          <span className="rounded-lg bg-zinc-950/80 px-3 py-1.5 text-xs font-medium text-white opacity-0 shadow-sm transition-opacity group-hover/preview:opacity-100 group-focus-visible/preview:opacity-100">
+            {t('previewLabel')}
+          </span>
+        </span>
+      </button>
 
-        {/* Hover veil with preview hint (hidden while processing/error overlays are active) */}
-        {image.status === 'done' && (
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors duration-300 flex items-center justify-center">
-            <span className="text-white font-medium bg-black/40 backdrop-blur-sm px-4 py-2 rounded-xl text-sm opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-              {t('previewLabel')}
-            </span>
-          </div>
-        )}
-
-        {/* Result badge (top-left) — kept visible during re-processing to avoid layout shift */}
-        {image.compressedBlob && !image.keptOriginal && (
-          <div className="absolute top-3 left-3 px-2.5 py-1 bg-emerald-500/90 backdrop-blur-sm rounded-lg text-xs font-bold text-white shadow-lg">
-            -{image.compressionRatio}%
-          </div>
-        )}
-        {image.compressedBlob && image.keptOriginal && (
-          <div
-            className="absolute top-3 left-3 px-2.5 py-1 bg-sky-500/90 backdrop-blur-sm rounded-lg text-xs font-medium text-white shadow-lg"
-            title={t('keptOriginalDesc')}
-          >
-            {t('keptOriginal')}
-          </div>
-        )}
-
-        {/* Remove button (top-right) */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onRemove(image.id);
-          }}
-          className="absolute top-3 right-3 p-2 bg-black/40 backdrop-blur-sm rounded-full text-zinc-300 hover:text-red-400 hover:bg-red-500/20 transition-all duration-300 opacity-100 md:opacity-0 md:group-hover:opacity-100 focus-visible:opacity-100"
-          title={t('removeImage')}
-          aria-label={t('removeImage')}
-        >
-          <DeleteIcon className="w-4 h-4" />
-        </button>
-
-        {/* Processing overlay */}
-        {image.status === 'processing' && (
-          <div className="absolute inset-0 bg-black/45 backdrop-blur-[2px] flex flex-col items-center justify-center gap-2.5 text-white">
-            <LoadingIcon className="w-7 h-7 animate-spin text-primary-light" />
-            <span className="text-xs font-medium tracking-wide">{t('statusCompressing')}</span>
-          </div>
-        )}
-
-        {/* Error overlay with retry */}
-        {image.status === 'error' && (
-          <div className="absolute inset-0 bg-red-950/60 backdrop-blur-[2px] flex flex-col items-center justify-center gap-3">
-            <div className="flex items-center gap-1.5 text-red-300 text-xs font-medium">
-              <ErrorIcon className="w-4 h-4" />
-              {t('statusFailed')}
-            </div>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onRetry(image.id);
-              }}
-              className="flex items-center gap-1.5 px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-xs font-medium rounded-lg border border-white/20 transition-all duration-300"
-            >
-              <RetryIcon className="w-3.5 h-3.5" />
-              {t('retry')}
-            </button>
-          </div>
-        )}
-      </div>
-
-      {/* Info Area */}
-      <div className="p-3.5 flex items-center gap-3">
-        <div className="min-w-0 flex-1">
-          <p className="text-sm font-medium text-zinc-800 dark:text-zinc-200 truncate" title={image.originalFile.name}>
-            {image.originalFile.name}
-          </p>
-          <div className="flex items-center gap-1.5 mt-1 text-xs">
-            <span className="text-zinc-500 dark:text-zinc-400">{formatFileSize(image.originalFile.size)}</span>
-            <ArrowIcon className="w-3 h-3 text-zinc-400 shrink-0" />
-            {image.compressedBlob ? (
-              <span className={`font-semibold transition-opacity ${image.status === 'processing' ? 'text-zinc-400 dark:text-zinc-500' : 'text-primary-dark dark:text-primary-light'}`}>
-                {formatFileSize(image.compressedBlob.size)}
-              </span>
-            ) : image.status === 'error' ? (
-              <span className="text-red-500 dark:text-red-400">—</span>
-            ) : (
-              <span className="text-zinc-500 animate-pulse">...</span>
+      <div className="flex min-w-0 flex-1 flex-col justify-between gap-2 px-2 pb-1 pt-3">
+        <div className="min-w-0 space-y-1.5">
+          <h3 className="truncate text-sm font-semibold text-zinc-800 dark:text-zinc-100" title={originalFile.name}>{originalFile.name}</h3>
+          <div className="flex min-h-6 flex-wrap items-center gap-x-1.5 gap-y-1 text-xs tabular-nums text-zinc-600 dark:text-zinc-400">
+            <span title={t('originalLabel')}>{formatFileSize(originalFile.size)}</span>
+            {compressedBlob && (
+              <>
+                <ArrowIcon aria-hidden="true" className="h-3 w-3 shrink-0 text-zinc-400" />
+                <span title={t('compressedLabel')} className="font-semibold text-zinc-800 dark:text-zinc-200">{formatFileSize(compressedBlob.size)}</span>
+              </>
             )}
           </div>
         </div>
 
-        {image.compressedBlob && (
-          <button
-            onClick={handleDownload}
-            disabled={image.status === 'processing'}
-            title={t('downloadBtn')}
-            aria-label={t('downloadBtn')}
-            className="w-9 h-9 shrink-0 flex items-center justify-center bg-gradient-to-r from-primary to-primary-dark hover:from-primary-light hover:to-primary text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-primary/25 active:scale-95 disabled:opacity-50 disabled:cursor-wait"
-          >
-            {image.status === 'processing' ? (
-              <LoadingIcon className="w-4 h-4 animate-spin" />
-            ) : (
-              <DownloadIcon className="w-4 h-4" />
+        <div className="flex min-w-0 items-center justify-between gap-1.5">
+          <div className="min-w-0 text-xs font-medium">
+            {busy && (
+              <span role="status" className="flex items-center gap-1 text-zinc-600 dark:text-zinc-400">
+                <LoadingIcon aria-hidden="true" className="h-3.5 w-3.5 shrink-0 animate-spin motion-reduce:animate-none" />
+                {t('statusCompressing')}
+              </span>
             )}
-          </button>
-        )}
+            {status === 'error' && (
+              <span role="status" className="flex items-center gap-1 text-red-600 dark:text-red-400">
+                <ErrorIcon aria-hidden="true" className="h-3.5 w-3.5 shrink-0" />
+                {t('statusFailed')}
+              </span>
+            )}
+            {status === 'done' && compressedBlob && (
+              <span
+                title={keptOriginal ? t('keptOriginalDesc') : t('savedLabel')}
+                className={`inline-block rounded-md px-2 py-1 tabular-nums ${
+                  keptOriginal ? 'bg-sky-500/10 text-sky-700 dark:text-sky-300' : 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300'
+                }`}
+              >
+                {keptOriginal ? t('keptOriginal') : `−${compressionRatio}%`}
+              </span>
+            )}
+          </div>
+
+          <div className="flex shrink-0 gap-1">
+            {status === 'error' ? (
+              <button
+                type="button"
+                onClick={() => onRetry(id)}
+                title={t('retry')}
+                aria-label={t('retry')}
+                className={`${actionClass} bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700`}
+              >
+                <RetryIcon className="h-4 w-4" />
+              </button>
+            ) : compressedBlob && (
+              <button
+                type="button"
+                onClick={() => downloadCompressedImage(image)}
+                disabled={busy}
+                title={t('downloadBtn')}
+                aria-label={t('downloadBtn')}
+                className={`${actionClass} bg-primary/10 text-primary-dark hover:bg-primary/20 disabled:opacity-50 dark:text-primary-light`}
+              >
+                <DownloadIcon className="h-4 w-4" />
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => onRemove(id)}
+              title={t('removeImage')}
+              aria-label={t('removeImage')}
+              className={`${actionClass} text-zinc-500 hover:bg-red-500/10 hover:text-red-600 dark:text-zinc-400 dark:hover:text-red-400`}
+            >
+              <DeleteIcon className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
+    </article>
   );
 };
 

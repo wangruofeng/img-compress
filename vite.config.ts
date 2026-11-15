@@ -18,6 +18,7 @@ export default defineConfig(({ mode, command }) => {
           '@': path.resolve(__dirname, '.'),
         }
       },
+      worker: { format: 'es' },
       build: {
         outDir: 'dist',
         assetsDir: 'assets',

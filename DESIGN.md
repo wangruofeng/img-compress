@@ -58,7 +58,7 @@ The palette is **not** a warm/orange/cream system. Primary is violet, neutrals a
 | primary | `#8b5cf6` | `primary` / `primary` | CTA buttons, active states, focus rings, highlights |
 | primary-light | `#a78bfa` | `primary-light` | Hover/active text on dark, processing spinner |
 | primary-dark | `#7c3aed` | `primary-dark` | Gradient end stop, hover/active text on light |
-| primary-glow | `#c4b5fd` | `primary-glow` | Scrollbar gradient, glow shadows |
+| primary-glow | `#c4b5fd` | `primary-glow` | Glow shadows |
 | accent | `#f59e0b` | `accent` | Secondary gradient stop (dropzone glow) |
 | background | `#09090b` | `background` / zinc-950 | Dark body base |
 | surface | `#18181b` | `surface` / zinc-900 | Dark cards, scrollbar track |
@@ -93,7 +93,7 @@ Two container tiers plus a noise texture, all defined in `index.css` under `@lay
 | `.glass-elevated` | `rgba(39,39,42,0.8)` | `rgba(255,255,255,0.9)` | 24px | `1px rgba(255,255,255,0.1)` / `rgba(0,0,0,0.1)` |
 
 - `.noise-bg::after` overlays a faint (opacity 0.03) fractal-noise SVG in dark mode for texture.
-- **Header** inlines its own frosted treatment rather than reusing `.glass`: `bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl backdrop-saturate-150` with a `border-zinc-200/70` hairline.
+- **Header** inlines its own frosted treatment rather than reusing `.glass`: `bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl backdrop-saturate-150` with a soft shadow.
 
 ## Radii
 
@@ -114,12 +114,12 @@ Header navigation controls (Help, Theme toggle, GitHub link) and the Onboarding 
 
 ```ts
 const flatButtonClass =
-  'flex items-center justify-center w-11 h-11 text-zinc-500 dark:text-zinc-400 hover:text-primary-dark dark:hover:text-primary-light transition-colors';
+  'flex items-center justify-center w-11 h-11 header-control';
 ```
 
 - No background, no border, no radius — color-only hover feedback.
 - The `LanguageSwitcher` trigger mirrors this: `h-11 px-3.5 text-[13px]` with the same text/hover colors, so all header controls share one visual height.
-- **Keep these in sync.** If you change one, change all three (`Header.flatButtonClass`, `Onboarding.headerButtonClass`, `LanguageSwitcher` trigger).
+- Keep the controls aligned with `.header-control`. The language menu uses neutral zinc for hover, focus, and selection, with 4px inset and row gaps.
 
 ### Header
 
@@ -127,15 +127,18 @@ const flatButtonClass =
 - Left: logo (`logo.svg` via `import.meta.env.BASE_URL`) + title (`.gradient-text`) + subtitle.
 - Right (desktop): Documentation link (pill, `px-3.5 py-1.5 rounded-full`) + GitHub icon button; mobile collapses to icon buttons + language switcher.
 
-### Cards (`glass-elevated` + `rounded-2xl`)
+### Cards and preview
 
-- **ImageCard** — preview (aspect-video, zoom-in cursor), emerald `-N%` badge top-left, circular remove button top-right, processing/error overlays, download button (primary gradient) in footer. Hover lifts border to `border-primary/40` and casts `shadow-primary/10`.
-- **SettingsPanel** — header row + padded body. Lossless toggle is a primary-gradient pill switch; quality slider is a native range input styled via `peer`/absolute-positioned track + thumb, with a traffic-light badge (emerald/amber/red) reflecting the quality tier.
+- **ImageCard** uses `.glass-elevated.home-surface` for borderless cards with soft shadows. Thumbnails use `object-contain`. The footer groups outcome and actions. The queue uses one, two, or three columns by viewport width.
+- **SettingsPanel** — header row + padded body. Lossless toggle is a primary-gradient pill switch; quality slider is a native range input styled via `peer`/absolute-positioned track + thumb, with a traffic-light badge reflecting the quality tier. The slider spans the panel. Output format and maximum width are equal-width groups on desktop and stack on mobile.
 - **Dropzone** — dashed border, `rounded-2xl`; on drag → `border-primary bg-primary/10 scale-[1.01]` + blurred primary→accent glow.
+
+- **Onboarding** uses borderless cards and shadows for visual hierarchy. The FAQ aligns with the compression example.
+- **PreviewModal** is a native dialog with a stable image frame, a checkerboard for transparency, and three views. In Compare, original is on the left and compressed is on the right.
 
 ### Buttons
 
-- **Primary / gradient** — `bg-gradient-to-r from-primary to-primary-dark hover:from-primary-light hover:to-primary` with `shadow-primary/25`, `active:scale-95`. Used for download button, format active state, CTA in Onboarding.
+- **Primary / gradient** — `bg-gradient-to-r from-primary to-primary-dark hover:from-primary-light hover:to-primary` with `shadow-primary/25`, `active:scale-95`. Used for the batch download button and CTAs in Onboarding. Format and width controls use a soft violet selection.
 - **Flat icon** — the shared token above.
 - **Pill link** — `rounded-full` low-emphasis link for "Documentation".
 
@@ -159,7 +162,7 @@ The quality badge and slider fill derive from `settings.quality` (`SettingsPanel
 ## Do's and Don'ts
 
 ### Do
-- Build containers on `.glass` / `.glass-elevated` over the body gradient — that is the intended depth language.
+- Use `.home-surface` with the homepage glass panels. Use background contrast and shadows on the product introduction page.
 - Use `primary` (violet) for CTAs, active states, and focus rings (`focus-visible:ring-primary/40`).
 - Encode outcome/quality with the **status palette only** (emerald/amber/red/sky), never as decoration.
 - Reuse the shared flat-button token for new header/overlay icon controls; keep the three call sites in sync.
@@ -167,10 +170,9 @@ The quality badge and slider fill derive from `settings.quality` (`SettingsPanel
 
 ### Don't
 - Don't introduce orange/cream surfaces, Playfair Display, or pill-shaped primary buttons — those belong to an abandoned spec (v2.0.0) that was never implemented and has been removed.
-- Don't strip glassmorphism in favor of flat opaque cards — the frosted blur is load-bearing for this design.
 - Don't use Tailwind `gray-*` for neutrals; the system is consistently on `zinc-*`.
 - Don't add filled backgrounds to the flat header controls at rest — they are color-only by design.
 
 ## Light / Dark Mode
 
-Dark is the default. The `ThemeContext` toggles `html.dark` / `html.light`. Light mode re-tints `.glass*`, `.gradient-text`, the body gradient, and inverts scrollbar track colors while keeping the violet primary palette intact. When adding a surface, always specify both `bg-… ` and `dark:bg-…` variants rather than a single fixed color.
+Dark is the default. The `ThemeContext` toggles `html.dark` / `html.light`. Light mode re-tints `.glass*`, `.gradient-text`, the body gradient, and changes the scrollbar track and rounded neutral thumb colors. The scrollbar rules cover both the root page and nested scroll areas such as Onboarding. When adding a surface, always specify both `bg-… ` and `dark:bg-…` variants rather than a single fixed color.

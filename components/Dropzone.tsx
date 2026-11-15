@@ -1,5 +1,6 @@
 import React, { useCallback, useState, useRef, useEffect } from 'react';
 import { UploadIcon, ErrorIcon } from './Icon';
+import { imageAccept, imageFormatLabels, normalizeImageFile } from '../utils/imageFormats';
 import { useLanguage } from '../contexts/LanguageContext';
 
 interface DropzoneProps {
@@ -42,7 +43,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onFilesSelected }) => {
     setIsDragging(false);
 
     const allFiles = Array.from(e.dataTransfer.files) as File[];
-    const files = allFiles.filter(file => file.type.startsWith('image/'));
+    const files = allFiles.map(normalizeImageFile).filter(file => file !== null);
 
     if (files.length < allFiles.length) {
       triggerWarning();
@@ -55,7 +56,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onFilesSelected }) => {
   const handleFileInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const allFiles = Array.from(e.target.files) as File[];
-      const files = allFiles.filter(file => file.type.startsWith('image/'));
+      const files = allFiles.map(normalizeImageFile).filter(file => file !== null);
       if (files.length < allFiles.length) {
         triggerWarning();
       }
@@ -103,7 +104,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onFilesSelected }) => {
           ref={inputRef}
           type="file"
           multiple
-          accept="image/png, image/jpeg, image/webp"
+          accept={imageAccept}
           onChange={handleFileInput}
           className="hidden"
           aria-hidden="true"
@@ -127,10 +128,10 @@ const Dropzone: React.FC<DropzoneProps> = ({ onFilesSelected }) => {
             </p>
           </div>
 
-          <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-600">
-            <span className="px-3 py-1 rounded-full bg-zinc-200 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700">PNG</span>
-            <span className="px-3 py-1 rounded-full bg-zinc-200 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700">JPG</span>
-            <span className="px-3 py-1 rounded-full bg-zinc-200 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700">WebP</span>
+          <div className="flex flex-wrap justify-center gap-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-400">
+            {imageFormatLabels.map(label => (
+              <span key={label} className="rounded-md bg-zinc-200/60 px-2.5 py-1 leading-4 dark:bg-zinc-800/80">{label}</span>
+            ))}
           </div>
         </div>
       </div>

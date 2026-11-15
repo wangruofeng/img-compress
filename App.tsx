@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import JSZip from 'jszip';
 import { ProcessedImage, CompressionSettings } from './types';
+import { imageExtension, normalizeImageFile } from './utils/imageFormats';
 import { downloadCompressedImage, generateId } from './utils/helpers';
 import { compressImage } from './utils/compressor';
 import Header from './components/Header';
@@ -72,7 +73,9 @@ const compressOne = async (img: ProcessedImage, currentSettings: CompressionSett
 function AppContent() {
   const { t } = useLanguage();
   const [images, setImages] = useState<ProcessedImage[]>([]);
-  const [previewImage, setPreviewImage] = useState<ProcessedImage | null>(null);
+  const [previewId, setPreviewId] = useState<string | null>(null);
+  const previewImage = images.find(image => image.id === previewId);
+  const previewTriggerRef = useRef<HTMLButtonElement | null>(null);
   const [settings, setSettings] = useState<CompressionSettings>(loadSettings);
   const [isProcessingGlobal, setIsProcessingGlobal] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -162,8 +165,9 @@ function AppContent() {
         if (item.type.startsWith('image/')) {
           const file = item.getAsFile();
           if (file) {
-            const extension = item.type.split('/')[1] || 'png';
-            files.push(new File([file], `pasted_${Date.now()}_${i}.${extension}`, { type: file.type }));
+            const extension = imageExtension(item.type);
+            const image = normalizeImageFile(new File([file], `pasted_${Date.now()}_${i}.${extension}`, { type: file.type }));
+            if (image) files.push(image);
           }
         }
       }
@@ -255,7 +259,7 @@ function AppContent() {
       const zip = new JSZip();
       const usedNames = new Set<string>();
       completedImages.forEach(img => {
-        const extension = img.compressedBlob?.type.split('/')[1] || 'jpg';
+        const extension = imageExtension(img.compressedBlob?.type ?? '');
         const originalName = img.originalFile.name.substring(0, img.originalFile.name.lastIndexOf('.'));
         let fileName = `${originalName}_compressed.${extension}`;
         let counter = 1;
@@ -328,7 +332,7 @@ function AppContent() {
                 {features.map((feature, index) => (
                   <div
                     key={feature.title}
-                    className="glass rounded-2xl p-3 border border-zinc-200 dark:border-zinc-800 text-center space-y-1 animate-slide-up hover:border-primary/40 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 transition-all duration-300 group"
+                    className="glass home-surface rounded-2xl p-3 shadow-md shadow-zinc-900/5 dark:shadow-black/20 text-center space-y-1 animate-slide-up hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 transition-all duration-300 group"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
                     <div className="w-8 h-8 mx-auto bg-primary/10 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
@@ -386,27 +390,28 @@ function AppContent() {
                 />
             </div>
 
-            <div className="max-w-4xl mx-auto">
-                <div className="flex items-center justify-between pb-4 border-b border-zinc-300 dark:border-zinc-800">
-                    <h3 className="text-lg font-semibold text-zinc-800 dark:text-zinc-200 flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                        {t('queueTitle')} <span className="text-zinc-500">({images.length})</span>
-                    </h3>
-                </div>
+            <section className="max-w-4xl mx-auto space-y-4" aria-labelledby="queue-title">
+                <h2 id="queue-title" className="flex items-center gap-2.5 font-display text-lg font-semibold text-zinc-800 dark:text-zinc-100">
+                    {t('queueTitle')}
+                    <span className="rounded-md bg-zinc-200/70 px-2 py-0.5 text-xs tabular-nums text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">{images.length}</span>
+                </h2>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pt-4">
-                    {images.map((image, index) => (
-                        <div key={image.id} className="animate-scale-in h-full" style={{ animationDelay: `${index * 50}ms` }}>
+                <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {images.map(image => (
+                        <li key={image.id} className="min-w-0">
                             <ImageCard
                                 image={image}
                                 onRemove={handleRemoveImage}
-                                onPreview={setPreviewImage}
+                                onPreview={(image, trigger) => {
+                                  previewTriggerRef.current = trigger;
+                                  setPreviewId(image.id);
+                                }}
                                 onRetry={handleRetry}
                             />
-                        </div>
+                        </li>
                     ))}
-                </div>
-            </div>
+                </ul>
+            </section>
           </div>
         )}
       </main>
@@ -414,7 +419,10 @@ function AppContent() {
       {previewImage && (
         <PreviewModal
           image={previewImage}
-          onClose={() => setPreviewImage(null)}
+          onClose={() => {
+            setPreviewId(null);
+            requestAnimationFrame(() => previewTriggerRef.current?.focus());
+          }}
         />
       )}
 
@@ -423,7 +431,7 @@ function AppContent() {
         <div className="hidden lg:flex fixed right-10 top-1/2 -translate-y-1/2 z-40 flex-col gap-3">
           <button
             onClick={(e) => { clearButtonRef.current = e.currentTarget; handleClearAll(); }}
-            className="flex items-center justify-center gap-2 px-5 py-3 text-sm text-zinc-500 dark:text-zinc-300 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all duration-300 border border-zinc-300 dark:border-zinc-700 hover:border-red-500/50 glass-elevated shadow-lg"
+            className="flex items-center justify-center gap-2 px-5 py-3 text-sm text-zinc-500 dark:text-zinc-300 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all duration-300 glass-elevated home-surface shadow-lg"
             title={t('clearAll')}
             aria-label={t('clearAll')}
           >
@@ -447,10 +455,10 @@ function AppContent() {
 
       {/* Action buttons — mobile: bottom bar */}
       {images.length > 0 && !showDeleteConfirm && (
-        <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 glass border-t border-zinc-200 dark:border-zinc-800 px-4 py-3 flex gap-3">
+        <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 glass home-surface shadow-[0_-8px_24px_rgba(0,0,0,0.1)] px-4 py-3 flex gap-3">
           <button
             onClick={(e) => { clearButtonRef.current = e.currentTarget; handleClearAll(); }}
-            className="flex items-center justify-center gap-2 px-4 py-2.5 text-sm text-zinc-600 dark:text-zinc-300 hover:text-red-500 dark:hover:text-red-400 rounded-xl transition-all duration-300 border border-zinc-300 dark:border-zinc-700 hover:border-red-500/50"
+            className="flex items-center justify-center gap-2 px-4 py-2.5 text-sm text-zinc-600 dark:text-zinc-300 hover:text-red-500 dark:hover:text-red-400 rounded-xl transition-all duration-300 bg-zinc-200/70 dark:bg-zinc-800/80"
             aria-label={t('clearAll')}
           >
             <DeleteIcon className="w-4 h-4" />
@@ -479,14 +487,14 @@ function AppContent() {
       {/* Delete Confirmation Modal */}
       {showDeleteConfirm && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm animate-fade-in"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm animate-fade-in [animation-duration:140ms] motion-reduce:animate-none"
           onClick={cancelDelete}
         >
           <div
             role="dialog"
             aria-modal="true"
             aria-labelledby="delete-confirm-title"
-            className="glass-elevated rounded-2xl p-8 max-w-sm w-full mx-4 border border-red-500/30 shadow-2xl shadow-red-500/20 animate-scale-in"
+            className="glass-elevated home-surface rounded-2xl p-8 max-w-sm w-full mx-4 shadow-2xl shadow-red-500/20 animate-scale-in [animation-duration:160ms] motion-reduce:animate-none"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="text-center space-y-5">
@@ -500,7 +508,7 @@ function AppContent() {
               <div className="flex gap-3 pt-2">
                 <button
                   onClick={cancelDelete}
-                  className="flex-1 px-5 py-3 text-sm text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 rounded-xl transition-all duration-300 border border-zinc-300 dark:border-zinc-700"
+                  className="flex-1 px-5 py-3 text-sm text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 rounded-xl transition-all duration-300"
                 >
                   {t('confirmClearCancel')}
                 </button>

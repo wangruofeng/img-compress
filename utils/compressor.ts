@@ -1,4 +1,6 @@
 import { CompressionSettings } from '../types';
+import { runExtendedCodec } from './extendedCodecs';
+import { hasApngFrames, isAnimatedWebpOrAvif } from './imageFormats';
 import encodeWebp, { init as initWebpEncoder } from '@jsquash/webp/encode';
 import webpEncSimdUrl from '@jsquash/webp/codec/enc/webp_enc_simd.wasm?url';
 import webpEncUrl from '@jsquash/webp/codec/enc/webp_enc.wasm?url';
@@ -142,6 +144,40 @@ export const compressImage = async (
   file: File,
   settings: CompressionSettings
 ): Promise<Blob> => {
+  if (file.type === 'image/svg+xml') {
+    await loadImage(file);
+    const { optimize } = await import('svgo/browser');
+    const source = await file.text();
+    // Keep IDs, viewBox, styles and animation definitions intact.
+    const result = optimize(source, { plugins: ['removeComments', 'removeMetadata'] });
+    return new Blob([result.data], { type: file.type });
+  }
+
+  if (file.type === 'image/gif') {
+    await loadImage(file); // Reject unreadable inputs before invoking the GIF worker.
+    const { default: gifsicle } = await import('gifsicle-wasm-browser');
+    const [output] = await gifsicle.run({
+      input: [{ file, name: 'input.gif' }],
+      command: ['-O1 input.gif -o /out/output.gif'],
+      isStrict: true,
+    });
+    if (!output?.size) throw new Error('GIF optimization failed');
+    return new Blob([output], { type: file.type });
+  }
+
+  if (file.type === 'image/png' || file.type === 'image/apng') {
+    const bytes = await file.arrayBuffer();
+    if (hasApngFrames(bytes)) {
+      const output = await runExtendedCodec({ format: 'image/apng', bytes });
+      // Never replace an animated input with a static image.
+      return hasApngFrames(await output.arrayBuffer()) ? output : file;
+    }
+  }
+
+  if ((file.type === 'image/webp' || file.type === 'image/avif') && await isAnimatedWebpOrAvif(file)) {
+    return file;
+  }
+
   const img = await loadImage(file);
 
   const canvas = document.createElement('canvas');
@@ -167,6 +203,15 @@ export const compressImage = async (
   if (settings.lossless) {
     ctx.drawImage(img, 0, 0, width, height);
     return encodeLossless(canvas, ctx);
+  }
+
+  if (settings.format === 'image/avif' || (settings.format === 'auto' && file.type === 'image/avif')) {
+    ctx.drawImage(img, 0, 0, width, height);
+    return runExtendedCodec({
+      format: 'image/avif',
+      image: ctx.getImageData(0, 0, canvas.width, canvas.height),
+      quality: settings.quality,
+    });
   }
 
   // Auto mode decides the format per image after inspecting its content

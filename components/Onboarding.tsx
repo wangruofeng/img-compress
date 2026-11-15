@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import {
   CloseIcon, ShieldIcon, BatchIcon, SparklesIcon, GemIcon,
-  UploadIcon, SettingsIcon, DownloadIcon, ChevronDownIcon, ArrowRightIcon,
+  UploadIcon, SettingsIcon, DownloadIcon, ChevronDownIcon,
   SunIcon, MoonIcon
 } from './Icon';
 import LanguageSwitcher from './LanguageSwitcher';
@@ -13,7 +13,10 @@ interface OnboardingProps {
 }
 
 const headerButtonClass =
-  'flex items-center justify-center w-11 h-11 text-zinc-500 dark:text-zinc-400 hover:text-primary-dark dark:hover:text-primary-light transition-colors';
+  'flex items-center justify-center w-11 h-11 header-control';
+
+const surfaceClass = 'rounded-2xl bg-white dark:bg-zinc-800/85';
+const cardClass = `${surfaceClass} p-6 shadow-md shadow-zinc-900/5 dark:shadow-black/25 hover:shadow-lg hover:shadow-zinc-900/10 dark:hover:shadow-black/40 transition-shadow duration-300 space-y-3 group`;
 
 // Scroll-triggered reveal wrapper: fades + rises once when entering the viewport
 const Reveal: React.FC<{
@@ -112,7 +115,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ onClose }) => {
       role="dialog"
       aria-modal="true"
       aria-label={t('onboardHelpLabel')}
-      className="fixed inset-0 z-[200] overflow-y-auto bg-gradient-to-br from-[#f8fafc] via-[#f1f5f9] to-[#e2e8f0] dark:from-[#09090b] dark:via-[#18181b] dark:to-[#0c0c10] noise-bg"
+      className="fixed inset-0 z-[200] overflow-y-auto bg-gradient-to-br from-[#f8fafc] via-[#f1f5f9] to-[#e2e8f0] dark:from-[#09090b] dark:via-[#18181b] dark:to-[#0c0c10] noise-bg [&_[role=listbox]]:border-0"
     >
       {/* Controls — mirrors the main header's button group so the language button aligns across pages */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -164,10 +167,9 @@ const Onboarding: React.FC<OnboardingProps> = ({ onClose }) => {
           <button
             onClick={onClose}
             autoFocus
-            className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-primary to-primary-dark hover:from-primary-light hover:to-primary text-white font-medium rounded-2xl transition-all duration-300 shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:scale-105 active:scale-95 focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/40 group"
+            className="inline-flex items-center px-8 py-3.5 bg-gradient-to-r from-primary to-primary-dark hover:from-primary-light hover:to-primary text-white font-medium rounded-2xl transition-all duration-300 shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:scale-105 active:scale-95 focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/40"
           >
             {t('onboardStart')}
-            <ArrowRightIcon className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
           </button>
 
           {/* Scroll hint */}
@@ -187,10 +189,10 @@ const Onboarding: React.FC<OnboardingProps> = ({ onClose }) => {
               {t('onboardFeaturesTitle')}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {features.map((feature, index) => (
+              {features.map(feature => (
                 <div
                   key={feature.title}
-                  className="glass rounded-2xl p-6 border border-zinc-200 dark:border-zinc-800 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 transition-all duration-300 space-y-3 group"
+                  className={cardClass}
                 >
                   <div className="w-11 h-11 bg-primary/10 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
                     <feature.icon className="w-5 h-5 text-primary-light" />
@@ -213,7 +215,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ onClose }) => {
               {steps.map((step, index) => (
                 <div
                   key={step.title}
-                  className="relative glass rounded-2xl p-6 border border-zinc-200 dark:border-zinc-800 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 transition-all duration-300 text-center space-y-3 group"
+                  className={`${cardClass} relative text-center`}
                 >
                   <span className="absolute top-4 left-4 text-4xl font-display font-bold text-primary/15 dark:text-primary/20 group-hover:text-primary/30 transition-colors duration-300 select-none">
                     {index + 1}
@@ -235,7 +237,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ onClose }) => {
             <h2 className="text-2xl sm:text-3xl font-display font-bold text-center text-zinc-800 dark:text-white">
               {t('onboardCompareTitle')}
             </h2>
-            <div className="glass-elevated rounded-2xl p-6 sm:p-8 border border-zinc-200 dark:border-zinc-700/50 space-y-5">
+            <div className={`${surfaceClass} p-6 sm:p-8 space-y-5 shadow-xl shadow-zinc-900/10 dark:shadow-black/40`}>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span className="text-zinc-500 dark:text-zinc-400">{t('originalLabel')}</span>
@@ -262,7 +264,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ onClose }) => {
               </div>
               <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
                 <p className="text-sm text-zinc-500 dark:text-zinc-400">{t('onboardCompareDesc')}</p>
-                <span className={`shrink-0 px-3 py-1.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-sm font-bold rounded-xl border border-emerald-500/20 transition-all duration-500 delay-700 ${barsVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
+                <span className={`shrink-0 px-3 py-1.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-sm font-bold rounded-xl transition-all duration-500 delay-700 ${barsVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
                   -84%
                 </span>
               </div>
@@ -276,21 +278,21 @@ const Onboarding: React.FC<OnboardingProps> = ({ onClose }) => {
             <h2 className="text-2xl sm:text-3xl font-display font-bold text-center text-zinc-800 dark:text-white">
               {t('onboardFaqTitle')}
             </h2>
-            <div className="space-y-3 max-w-2xl mx-auto">
+            <div className="space-y-3">
               {faqs.map((faq, index) => {
                 const isOpen = openFaq === index;
                 return (
                   <div
                     key={faq.q}
-                    className={`glass rounded-2xl border transition-colors duration-300 overflow-hidden ${
-                      isOpen ? 'border-primary/40' : 'border-zinc-200 dark:border-zinc-800'
+                    className={`${surfaceClass} overflow-hidden transition-shadow duration-300 ${
+                      isOpen ? 'shadow-lg shadow-primary/15 dark:shadow-black/40' : 'shadow-sm shadow-zinc-900/5 dark:shadow-black/25'
                     }`}
                   >
                     <button
                       onClick={() => setOpenFaq(isOpen ? null : index)}
                       aria-expanded={isOpen}
                       aria-controls={`faq-panel-${index}`}
-                      className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-sm font-medium text-zinc-800 dark:text-zinc-200 hover:text-primary-dark dark:hover:text-primary-light transition-colors"
+                      className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-sm font-medium text-zinc-800 dark:text-zinc-200 hover:text-primary-dark dark:hover:text-primary-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary/60 transition-colors"
                     >
                       {faq.q}
                       <ChevronDownIcon
@@ -321,10 +323,9 @@ const Onboarding: React.FC<OnboardingProps> = ({ onClose }) => {
           <section className="text-center pb-8">
             <button
               onClick={onClose}
-              className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-primary to-primary-dark hover:from-primary-light hover:to-primary text-white font-medium rounded-2xl transition-all duration-300 shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:scale-105 active:scale-95 focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/40 group"
+              className="inline-flex items-center px-8 py-3.5 bg-gradient-to-r from-primary to-primary-dark hover:from-primary-light hover:to-primary text-white font-medium rounded-2xl transition-all duration-300 shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:scale-105 active:scale-95 focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/40"
             >
               {t('onboardStart')}
-              <ArrowRightIcon className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
             </button>
           </section>
         </Reveal>

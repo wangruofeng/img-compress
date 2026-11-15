@@ -38,13 +38,13 @@ const LanguageSwitcher: React.FC = () => {
         aria-haspopup="listbox"
         aria-expanded={isDropdownOpen}
         aria-label={t('languageLabel')}
-        className="flex items-center justify-center gap-2 h-11 px-3.5 text-[13px] font-medium text-zinc-500 dark:text-zinc-400 hover:text-primary-dark dark:hover:text-primary-light transition-colors"
+        className="flex items-center justify-center gap-2 h-11 px-3.5 text-[13px] font-medium header-control"
       >
         <GlobeIcon className="w-5 h-5" />
         <span className="hidden sm:inline">{languages.find(l => l.code === language)?.label}</span>
       </button>
       {isDropdownOpen && (
-        <div role="listbox" aria-label={t('languageLabel')} className="absolute right-0 mt-2 w-36 rounded-lg py-1 overflow-hidden animate-scale-in bg-white dark:bg-zinc-900 shadow-lg border border-zinc-100 dark:border-zinc-800">
+        <div role="listbox" aria-label={t('languageLabel')} className="absolute right-0 mt-2 w-36 flex flex-col gap-1 rounded-lg p-1 overflow-hidden animate-scale-in bg-white dark:bg-zinc-900 shadow-lg border border-zinc-100 dark:border-zinc-800">
           {languages.map((lang) => (
             <button
               key={lang.code}
@@ -54,9 +54,9 @@ const LanguageSwitcher: React.FC = () => {
                 setLanguage(lang.code);
                 setIsDropdownOpen(false);
               }}
-              className={`w-full text-left px-3 py-2 text-sm transition-colors duration-150 flex items-center gap-2 ${language === lang.code
-                ? 'text-zinc-900 dark:text-white font-medium'
-                : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800/50'
+              className={`w-full rounded-md text-left px-2.5 py-2 text-sm transition-colors duration-150 flex items-center gap-2 focus-visible:outline-none focus-visible:bg-zinc-100 focus-visible:text-zinc-800 dark:focus-visible:bg-zinc-800 dark:focus-visible:text-zinc-200 ${language === lang.code
+                ? 'bg-zinc-100 font-medium text-zinc-800 dark:bg-zinc-800/75 dark:text-zinc-200'
+                : 'text-zinc-500 hover:bg-zinc-100/70 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800/50 dark:hover:text-zinc-200'
                 }`}
             >
               <span className="text-sm">{lang.flag}</span>

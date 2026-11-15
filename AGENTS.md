@@ -25,7 +25,7 @@ npm run preview
 npm run preview:gh-pages
 ```
 
-**No linting or testing commands exist.** Run `npm run build` to verify changes compile correctly.
+**No linting or testing commands exist.** Run `npm run build` and `npx tsc --noEmit`. For Cloudflare Pages changes, also run `npm run build:cloudflare`.
 
 ## Deployment
 
@@ -134,7 +134,7 @@ try {
 - **Class ordering**: Group related classes logically
 - **Color palette**: `primary` is **violet** (`#8b5cf6` + `primary-light`/`primary-dark`/`primary-glow`) with an amber `accent`; neutrals are **`zinc`** (not `gray`). `emerald`/`amber`/`red`/`sky` are **status-only** (saved-space, warning, error, kept-original) — never brand chrome. See `DESIGN.md` for the full system.
 - **Responsive**: `sm:`, `md:`, `lg:`, `xl:` prefixes for breakpoints
-- **Glassmorphism**: Containers use the `.glass` / `.glass-elevated` component classes (defined in `index.css`) over the body gradient. Always specify both `bg-… ` and `dark:bg-…` for custom surfaces.
+- **Surfaces**: Homepage panels use frosted glass with `.home-surface` to remove borders. The upload area keeps its dashed frame. Product introduction cards use background contrast and shadows. See [DESIGN.md](DESIGN.md).
 - **Flat icon buttons**: Header (`flatButtonClass`) and Onboarding (`headerButtonClass`) controls share a borderless `w-11 h-11` token with color-only hover; the `LanguageSwitcher` trigger mirrors its height. Keep all three in sync.
 - **Animation**: `animate-fade-in`, `animate-slide-up`, `animate-scale-in`, `animate-soft-float`, `animate-spin` (defined in `tailwind.config.js`). Ambient/entrance animations that may affect vestibular comfort pair with `motion-reduce:animate-none`.
 - **Dark mode is the default**: toggled via `html.dark` / `html.light` (`ThemeContext`). Design dark-first.
@@ -154,7 +154,7 @@ img-compress/
 │   ├── LanguageContext.tsx # i18n context
 │   └── ThemeContext.tsx    # Dark/light theme context
 ├── locales/            # i18n translation strings (translations.ts)
-├── utils/             # Pure functions (compression, helpers)
+├── utils/             # Compression, codec worker, format detection, helpers
 ├── types.ts           # TypeScript interfaces
 ├── App.tsx            # Main app with state orchestration
 ├── index.tsx          # Entry point
@@ -184,16 +184,7 @@ img-compress/
 
 ### Common Patterns
 
-**Debounced processing** (App.tsx):
-```typescript
-useEffect(() => {
-  if (images.length === 0) return;
-  const timer = setTimeout(() => {
-    processAllImages(images, settings);
-  }, 500);
-  return () => clearTimeout(timer);
-}, [settings]);
-```
+**Debounced processing** is implemented in [App.tsx](App.tsx). Settings changes trigger reprocessing after 500 ms. Keep the run ID check and revoke object URLs from superseded results.
 
 **Blob URL cleanup**:
 ```typescript
@@ -212,7 +203,7 @@ return new Promise((resolve, reject) => {
 
 ## Important Notes
 
-- **Browser-only**: No Node.js server code, all APIs are DOM/Canvas
+- **Browser-only**: No Node.js server code, image processing uses DOM, Canvas, and WebAssembly in the browser
 - **i18n**: All user-facing strings go through `useLanguage().t()` hook
 - **State immutability**: Always create new objects/arrays when updating state (`[...prev, newItem]`)
 

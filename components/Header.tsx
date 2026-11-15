@@ -9,14 +9,14 @@ interface HeaderProps {
 }
 
 const flatButtonClass =
-  'flex items-center justify-center w-11 h-11 text-zinc-500 dark:text-zinc-400 hover:text-primary-dark dark:hover:text-primary-light transition-colors';
+  'flex items-center justify-center w-11 h-11 header-control';
 
 const Header: React.FC<HeaderProps> = ({ onShowOnboarding }) => {
   const { t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-zinc-200/70 dark:border-zinc-800/70 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl backdrop-saturate-150">
+    <header className="sticky top-0 z-50 shadow-sm shadow-zinc-900/5 dark:shadow-black/20 [&_[role=listbox]]:border-0 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl backdrop-saturate-150">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 gap-5">
           <div className="flex shrink-0 items-center gap-3">
@@ -28,9 +28,13 @@ const Header: React.FC<HeaderProps> = ({ onShowOnboarding }) => {
           </div>
           <div className="flex items-center gap-2 sm:gap-2.5 ml-auto">
             <div className="hidden md:flex items-center gap-2.5">
-              <a href="https://github.com/wangruofeng/img-compress/blob/main/README.md" target="_blank" rel="noopener noreferrer" className="px-3.5 py-1.5 rounded-full text-[13px] font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">{t('documentation')}</a>
+              <a href="https://github.com/wangruofeng/img-compress/blob/main/README.md" target="_blank" rel="noopener noreferrer" className="px-3.5 py-1.5 rounded-full text-[13px] font-medium header-control">{t('documentation')}</a>
               <a href="https://github.com/wangruofeng/img-compress/" target="_blank" rel="noopener noreferrer" className={flatButtonClass} aria-label="GitHub">
-                <img src={`${import.meta.env.BASE_URL}github.svg`} alt="GitHub" className="w-5 h-5 dark:invert" />
+                <span
+                  aria-hidden="true"
+                  className="h-5 w-5 bg-current"
+                  style={{ mask: `url("${import.meta.env.BASE_URL}github.svg") center / contain no-repeat` }}
+                />
               </a>
             </div>
             <button onClick={onShowOnboarding} className={flatButtonClass} title={t('onboardHelpLabel')} aria-label={t('onboardHelpLabel')}>

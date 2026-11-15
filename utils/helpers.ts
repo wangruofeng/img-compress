@@ -1,3 +1,5 @@
+import { imageExtension } from './imageFormats';
+
 export const formatFileSize = (bytes: number | undefined | null): string => {
   if (!bytes || bytes === 0) return '0 B';
   if (isNaN(bytes)) return '0 B';
@@ -23,7 +25,7 @@ export const downloadCompressedImage = (image: {
   const url = URL.createObjectURL(image.compressedBlob);
   const link = document.createElement('a');
   link.href = url;
-  const extension = image.compressedBlob.type.split('/')[1] || 'jpg';
+  const extension = imageExtension(image.compressedBlob.type);
   const originalName = image.originalFile.name.substring(0, image.originalFile.name.lastIndexOf('.'));
   link.download = `${originalName}_compressed.${extension}`;
   document.body.appendChild(link);
