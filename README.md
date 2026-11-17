@@ -35,7 +35,9 @@
 
 ### 🎬 Demo
 
-[Watch the promo video (MP4)](docs/media/promo.mp4)
+https://github.com/user-attachments/assets/0d5abb5c-3669-4521-b50c-0f65c744235c
+
+[Download the original MP4](docs/media/promo.mp4)
 
 #### Main Features
 - **Drag & Drop Upload** - Click or drag image files
