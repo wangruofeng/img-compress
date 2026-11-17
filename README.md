@@ -35,6 +35,8 @@
 
 ### 🎬 Demo
 
+[Watch the promo video (MP4)](docs/media/promo.mp4)
+
 #### Main Features
 - **Drag & Drop Upload** - Click or drag image files
 - **Real-time Compression** - Automatic compression starts after upload
